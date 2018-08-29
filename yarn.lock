@@ -2288,10 +2288,6 @@ extend-shallow@^3.0.0, extend-shallow@^3.0.2:
     assign-symbols "^1.0.0"
     is-extendable "^1.0.1"
 
-extend@^2.0.1:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/extend/-/extend-2.0.2.tgz#1b74985400171b85554894459c978de6ef453ab7"
-
 extend@^3.0.0, extend@~3.0.1, extend@~3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/extend/-/extend-3.0.2.tgz#f8b1136b4071fbd8eb140aff858b1019ec2915fa"
@@ -2979,12 +2975,6 @@ gulp-imagemin@^4.1.0:
     imagemin-jpegtran "^5.0.2"
     imagemin-optipng "^5.2.1"
     imagemin-svgo "^6.0.0"
-
-gulp-load-tasks@^0.8.4:
-  version "0.8.4"
-  resolved "https://registry.yarnpkg.com/gulp-load-tasks/-/gulp-load-tasks-0.8.4.tgz#f6a79fa76b325356d2a4cf636a717206f2d9fbdb"
-  dependencies:
-    extend "^2.0.1"
 
 gulp-match@^1.0.3:
   version "1.0.3"
