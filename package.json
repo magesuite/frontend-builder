@@ -1,7 +1,6 @@
 {
-    "name": "theme-builder",
+    "name": "magesuite-frontend-builder",
     "version": "1.0.0",
-    "main": "index.js",
     "repository": "git@gitlab.creativestyle.pl:m2c/theme-builder.git",
     "author": "creativestyle",
     "license": "MIT",
