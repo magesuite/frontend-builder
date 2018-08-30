@@ -1,8 +1,10 @@
 const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const environment = require('../../environment');
 const paths = require('../../paths');
 const parentAliases = require('../../parentAliases');
+const collectEntries = require('../../collectEntries');
 
 /**
  * Returns information for scripts building.
@@ -13,9 +15,9 @@ const settings = {
      */
     watch: [path.join(paths.src, '**/*.ts')],
     webpack: {
-        entry: path.join(paths.src, 'bundle.ts'),
+        entry: collectEntries(path.join(paths.src, 'entries/*.ts')),
         output: {
-            filename: 'bundle.js',
+            filename: '[name].js',
             path: path.join(paths.dist, 'web'),
             library: 'bundle',
             libraryTarget: 'umd',
@@ -41,8 +43,24 @@ const settings = {
                         },
                     ],
                 },
+                {
+                    test: /\.scss$/,
+                    use: [
+                        MiniCssExtractPlugin.loader,
+                        'css-loader',
+                        'sass-loader',
+                    ],
+                },
             ],
         },
+        plugins: [
+            new MiniCssExtractPlugin({
+                // Options similar to the same options in webpackOptions.output
+                // both options are optional
+                filename: '[name].css',
+                chunkFilename: '[id].css',
+            }),
+        ],
         resolve: {
             extensions: ['.tsx', '.ts', '.js'],
             alias: parentAliases(),

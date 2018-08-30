@@ -12,7 +12,7 @@ let firstRun = true;
  * Task for compiling components' JS files.
  * @return {Promise} Promise used to properly time task execution completition.
  */
-module.exports = function(done) {
+module.exports = function buildWebpack(done) {
     const compiler = webpack(settings.webpack);
     const callback = (error, stats) => {
         if (error) {
