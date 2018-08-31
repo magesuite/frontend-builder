@@ -14,8 +14,6 @@ const traverseAliases = themePath => {
         /<parent>[a-z]+\/[^\-]+\-([a-z]+)<\/parent>/i
     );
 
-    console.log(themeXML);
-
     if (parentMatch) {
         const parentName = parentMatch[1];
         const parentPath = path.resolve(`../theme-${parentName}`);

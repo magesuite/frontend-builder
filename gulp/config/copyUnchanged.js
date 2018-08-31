@@ -1,12 +1,14 @@
 const path = require('path');
 
-const paths = require('../../paths');
+const paths = require('../paths');
 
 /**
- * Returns configuration for copying miscellaneous files that don't need any processing.
+ * Returns configuration for copying assets that don't need any processing.
  */
 module.exports = {
     watch: [
+        // Fonts.
+        path.join(paths.src, '**/*.{ttf,woff,woff2,eot}'),
         // JSON except data for templates.
         path.join(paths.src, '**/*.json'),
         // PHP files
@@ -19,14 +21,13 @@ module.exports = {
         path.join(paths.src, '**/requirejs-config.js'),
         // Less and CSS styles.
         path.join(paths.src, '**/*.{less,css}'),
-        // Theme web images
-        path.join(paths.src, '**/*.{gif,png,jpg,jpeg,webp,svg,ico}'),
-        '!' + path.join(paths.src, 'sprites/**/*'),
         // Video media files
         path.join(paths.src, '**/*.{webm,mp4,ogg}'),
     ],
 
     src: [
+        // Fonts.
+        path.join(paths.src, '**/*.{ttf,woff,woff2,eot}'),
         // JSON.
         path.join(paths.src, '**/*.json'),
         // PHP files
@@ -39,9 +40,6 @@ module.exports = {
         path.join(paths.src, '**/requirejs-config.js'),
         // Less styles.
         path.join(paths.src, '**/*.{less,css}'),
-        // Theme web images
-        path.join(paths.src, '**/*.{gif,png,jpg,jpeg,webp,svg,ico}'),
-        '!' + path.join(paths.src, 'sprites/**/*'),
         // Video media files
         path.join(paths.src, '**/*.{webm,mp4,ogg}'),
     ],

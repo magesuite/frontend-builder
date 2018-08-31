@@ -3,8 +3,8 @@ const PluginError = require('plugin-error');
 const log = require('fancy-log');
 const webpack = require('webpack');
 
-const environment = require('../../environment');
-const settings = require('../../config/build/scripts');
+const environment = require('../environment');
+const settings = require('../config/buildWebpack');
 // Indicate if we are running the task the first time in watch mode.
 let firstRun = true;
 
@@ -23,8 +23,17 @@ module.exports = function buildWebpack(done) {
                 colors: true,
                 modules: false,
                 entrypoints: false,
+                hash: false,
+                builtAt: false,
             })
         );
+
+        if (!environment.watch && stats.hasErrors()) {
+            throw new PluginError(
+                'webpack',
+                'There were errors during webpack build!'
+            );
+        }
 
         if (firstRun) {
             done();

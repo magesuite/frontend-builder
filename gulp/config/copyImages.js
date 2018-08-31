@@ -1,6 +1,7 @@
+// @ts-check
 const path = require('path');
 
-const paths = require('../../paths');
+const paths = require('../paths');
 
 /**
  *  Configuration for images task.
@@ -8,13 +9,13 @@ const paths = require('../../paths');
 module.exports = {
     watch: [
         // Images except sprites
-        path.join(paths.src, 'images/**/*.{gif,png,jpg,webp,svg,ico}'),
+        path.join(paths.src, '**/*.{gif,png,jpg,webp,svg,ico}'),
     ],
     src: [
         // Images except sprites
-        path.join(paths.src, 'images/**/*.{gif,png,jpg,webp,svg,ico}'),
+        path.join(paths.src, '**/*.{gif,png,jpg,webp,svg,ico}'),
     ],
-    dest: path.join(paths.dist, 'web/images/'),
+    dest: paths.dist,
     /**
      * Configuration for imagemin image minifier.
      * @see https://github.com/sindresorhus/gulp-imagemin#imageminoptions

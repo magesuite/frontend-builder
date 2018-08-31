@@ -1,6 +1,6 @@
 const path = require('path');
 
-const paths = require('../../paths');
+const paths = require('../paths');
 
 /**
  * Cleaning task settings.

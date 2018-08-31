@@ -2,10 +2,11 @@
 const path = require('path');
 const fs = require('fs-extra');
 const through = require('through2');
+const gulp = require('gulp');
 
-const paths = require('../../paths');
-const environment = require('../../environment');
-const settings = require('../../config/copy/twig');
+const paths = require('../paths');
+const environment = require('../environment');
+const settings = require('../config/copyTwig');
 
 /**
  * Trim dependency path from possible directory prefix.
@@ -93,14 +94,14 @@ function parseDepenedencies(file) {
 
 let firstRun = true;
 
-module.exports = function() {
+module.exports = function copyTwig() {
     // If we are in watch mode, add watchers for this task.
     if (firstRun && environment.watch === true) {
         firstRun = false;
-        this.gulp.watch([settings.watch], ['copy:twig']);
+        gulp.watch([settings.watch], this);
     }
 
-    return this.gulp
+    return gulp
         .src(settings.src)
         .pipe(
             through.obj((file, enc, cb) => {
@@ -108,5 +109,5 @@ module.exports = function() {
                 return cb(null, file);
             })
         )
-        .pipe(this.gulp.dest(settings.dest));
+        .pipe(gulp.dest(settings.dest));
 };
