@@ -19,6 +19,8 @@ module.exports = {
         path.join(paths.src, '**/*.csv'),
         // Require.js configs.
         path.join(paths.src, '**/requirejs-config.js'),
+        // JavaScript files.
+        path.join(paths.src, 'web/js/**/*.js'),
         // Less and CSS styles.
         path.join(paths.src, '**/*.{less,css}'),
         // Video media files
@@ -38,6 +40,8 @@ module.exports = {
         path.join(paths.src, '**/*.csv'),
         // Require.js configs.
         path.join(paths.src, '**/requirejs-config.js'),
+        // JavaScript files.
+        path.join(paths.src, 'web/js/**/*.js'),
         // Less styles.
         path.join(paths.src, '**/*.{less,css}'),
         // Video media files
