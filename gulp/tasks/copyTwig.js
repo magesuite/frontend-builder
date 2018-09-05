@@ -98,7 +98,7 @@ module.exports = function copyTwig() {
     // If we are in watch mode, add watchers for this task.
     if (firstRun && environment.watch === true) {
         firstRun = false;
-        gulp.watch([settings.watch], this);
+        gulp.watch(settings.watch, copyTwig);
     }
 
     return gulp

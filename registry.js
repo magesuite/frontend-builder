@@ -1,6 +1,8 @@
 const fs = require('fs');
 const util = require('util');
 
+const environment = require('./gulp/environment');
+
 const DefaultRegistry = require('undertaker-registry');
 
 function MagesuiteRegistry() {
@@ -14,6 +16,7 @@ MagesuiteRegistry.prototype.init = function(taker) {
     taker.task(require('./gulp/tasks/copyHtml'));
     taker.task(require('./gulp/tasks/copyImages'));
     taker.task(require('./gulp/tasks/copyTwig'));
+    taker.task(require('./gulp/tasks/copyScripts'));
     taker.task(require('./gulp/tasks/copyUnchanged'));
 
     taker.task(require('./gulp/tasks/clean'));
@@ -26,6 +29,7 @@ MagesuiteRegistry.prototype.init = function(taker) {
             taker.parallel(
                 'buildWebpack',
                 'copyHtml',
+                'copyScripts',
                 'copyImages',
                 'copyTwig',
                 'copyUnchanged'
@@ -33,7 +37,15 @@ MagesuiteRegistry.prototype.init = function(taker) {
         )
     );
 
-    taker.task('serve', taker.series('build', 'browserSync'));
+    taker.task(
+        'watch',
+        taker.series(function enableWatch(done) {
+            environment.watch = true;
+            done();
+        }, 'build')
+    );
+
+    taker.task('serve', taker.series('watch', 'browserSync'));
 };
 
 module.exports = new MagesuiteRegistry();

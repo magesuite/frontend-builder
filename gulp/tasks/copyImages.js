@@ -12,7 +12,7 @@ module.exports = function copyImages() {
     // Initiate watch only the first time.
     if (firstRun && environment.watch === true) {
         firstRun = false;
-        gulp.watch([settings.watch], this);
+        gulp.watch(settings.watch, copyImages);
     }
 
     return gulp

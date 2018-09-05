@@ -13,7 +13,7 @@ const settings = {
     webpack: {
         entry: collectEntries(path.join(paths.src, 'entries/*.ts')),
         output: {
-            filename: '[name].js',
+            filename: 'js/[name].js',
             path: path.join(paths.dist, 'web'),
             library: 'bundle',
             libraryTarget: 'umd',
@@ -45,12 +45,21 @@ const settings = {
                             loader: 'postcss-loader',
                             options: {
                                 sourceMap: environment.development,
+                                plugins: [
+                                    require('postcss-flexbugs-fixes')(),
+                                    require('autoprefixer')(),
+                                ],
                             },
                         },
                         {
                             loader: 'sass-loader',
                             options: {
                                 sourceMap: environment.development,
+                                includePaths: [
+                                    paths.src,
+                                    'node_modules',
+                                    ...Object.values(parentAliases),
+                                ],
                             },
                         },
                     ],
@@ -61,7 +70,7 @@ const settings = {
             new MiniCssExtractPlugin({
                 // Options similar to the same options in webpackOptions.output
                 // both options are optional
-                filename: '[name].css',
+                filename: 'css/[name].css',
                 chunkFilename: '[id].css',
             }),
         ],
