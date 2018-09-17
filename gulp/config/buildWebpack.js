@@ -1,5 +1,7 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { VueLoaderPlugin } = require('vue-loader');
+const jsonImporter = require('node-sass-json-importer');
 
 const environment = require('../environment');
 const paths = require('../paths');
@@ -60,9 +62,14 @@ const settings = {
                                     'node_modules',
                                     ...Object.values(parentAliases),
                                 ],
+                                importer: jsonImporter(),
                             },
                         },
                     ],
+                },
+                {
+                    test: /\.vue$/,
+                    use: 'vue-loader',
                 },
             ],
         },
@@ -73,15 +80,19 @@ const settings = {
                 filename: 'css/[name].css',
                 chunkFilename: '[id].css',
             }),
+            new VueLoaderPlugin(),
         ],
         resolve: {
-            extensions: ['.tsx', '.ts', '.js'],
+            extensions: ['.tsx', '.ts', '.js', '.scss', '.css'],
             alias: parentAliases,
             modules: [
                 paths.src,
                 'node_modules',
                 ...Object.values(parentAliases),
             ],
+        },
+        externals: {
+            jquery: 'jquery',
         },
         devtool: environment.development ? 'inline-source-map' : false,
         mode: environment.development ? 'development' : 'production',

@@ -1,4 +1,4 @@
-const log = require('fancy-log');
+const log = require('../../node_modules/@types/fancy-log/index');
 const del = require('del');
 const settings = require('../config/clean');
 
