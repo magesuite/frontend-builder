@@ -5,6 +5,7 @@ const imagemin = require('gulp-imagemin');
 
 const environment = require('../environment');
 const settings = require('../config/copyImages');
+const invalidateCache = require('../invalidateCache');
 
 let firstRun = true;
 
@@ -19,5 +20,6 @@ module.exports = function copyImages() {
         .src(settings.src)
         .pipe(changed(settings.dest))
         .pipe(gulpif(environment.production, imagemin(settings.imagemin)))
+        .pipe(invalidateCache.staticPipe())
         .pipe(gulp.dest(settings.dest));
 };

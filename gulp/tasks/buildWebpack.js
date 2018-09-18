@@ -5,6 +5,7 @@ const webpack = require('webpack');
 
 const environment = require('../environment');
 const settings = require('../config/buildWebpack');
+const invalidateCache = require('../invalidateCache');
 // Indicate if we are running the task the first time in watch mode.
 let firstRun = true;
 
@@ -27,6 +28,8 @@ module.exports = function buildWebpack(done) {
                 builtAt: false,
             })
         );
+
+        invalidateCache.static(Object.keys(stats.compilation.assets));
 
         if (!environment.watch && stats.hasErrors()) {
             throw new PluginError(

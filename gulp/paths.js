@@ -9,19 +9,24 @@ const templateInfo = require(path.resolve('composer.json'));
 module.exports = {
     /**
      * Path to sources directory relative to CWD.
-     * @type {String}
+     * @type {string}
      */
     src: path.resolve('src/'),
     /**
      * Path to distribution directory relative to CWD.
-     * @type {String}
+     * @type {string}
      */
     dist: path.resolve('../../../app/design/frontend/' + templateInfo.name),
     /**
-     * Path to temporary directory relative to CWD.
-     * @type {String}
+     * Path to pub/static/frontend.
+     * @type {string}
      */
-    tmp: '.tmp/',
+    pubStatic: path.resolve('../../../pub/static/frontend'),
+    /**
+     * Path to var directory.
+     * @type {string}
+     */
+    var: path.resolve('../../../var'),
     /**
      * Web (url) path to theme's frontend assets (without the language part)
      * @type {String}
