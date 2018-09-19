@@ -5,8 +5,8 @@ const path = require('path');
 const paths = require('./paths');
 
 const varCachePaths = [
-    path.join(paths.var, 'cache/**/*'),
-    path.join(paths.var, 'page_cache/**/*'),
+    path.join(paths.var, 'cache/**'),
+    path.join(paths.var, 'page_cache/**'),
 ];
 let invalidateVarTimeout;
 

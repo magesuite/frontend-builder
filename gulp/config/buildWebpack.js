@@ -40,6 +40,7 @@ const settings = {
                         {
                             loader: 'css-loader',
                             options: {
+                                url: false,
                                 sourceMap: environment.development,
                             },
                         },
