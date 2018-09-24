@@ -13,6 +13,8 @@ util.inherits(MagesuiteRegistry, DefaultRegistry);
 MagesuiteRegistry.prototype.init = function(taker) {
     taker.task(require('./gulp/tasks/buildWebpack'));
 
+    taker.task(require('./gulp/tasks/buildSprites'));
+
     taker.task(require('./gulp/tasks/copyHtml'));
     taker.task(require('./gulp/tasks/copyImages'));
     taker.task(require('./gulp/tasks/copyTwig'));
@@ -28,6 +30,7 @@ MagesuiteRegistry.prototype.init = function(taker) {
             'clean',
             taker.parallel(
                 'buildWebpack',
+                'buildSprites',
                 'copyHtml',
                 'copyScripts',
                 'copyImages',

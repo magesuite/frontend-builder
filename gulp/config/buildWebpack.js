@@ -17,7 +17,7 @@ const settings = {
         output: {
             filename: 'js/[name].js',
             path: path.join(paths.dist, 'web'),
-            library: 'bundle',
+            library: '[name]',
             libraryTarget: 'umd',
         },
         module: {
@@ -94,6 +94,16 @@ const settings = {
         },
         externals: {
             jquery: 'jquery',
+            $: 'jquery',
+            jQuery: 'jquery',
+            Swiper: 'Swiper',
+            'Magento_Ui/js/modal/modal': 'Magento_Ui/js/modal/modal',
+            'Magento_Ui/js/lib/core/storage/local':
+                'Magento_Ui/js/lib/core/storage/local',
+            Stickyfill: 'Stickyfill',
+            'mage/translate': 'mage/translate',
+            isMobile: 'isMobile',
+            vendors: 'vendors',
         },
         devtool: environment.development ? 'inline-source-map' : false,
         mode: environment.development ? 'development' : 'production',
