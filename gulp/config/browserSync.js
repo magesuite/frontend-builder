@@ -14,6 +14,46 @@ const settings = {
         proxy: {
             target: 'http://creativeshop.me',
         },
+        rewriteRules: [
+            {
+                match: '.creativeshop.me',
+                replace: '',
+            },
+        ],
+        serveStatic: [
+            {
+                route: `${paths.distWeb}/en_US`,
+                dir: `${paths.dist}/web`,
+            },
+            {
+                route: `${paths.distWeb}/en_GB`,
+                dir: `${paths.dist}/web`,
+            },
+            {
+                route: `${paths.distWeb}/de_DE`,
+                dir: `${paths.dist}/web`,
+            },
+            {
+                route: `${paths.distWeb}/en_DE`,
+                dir: `${paths.dist}/web`,
+            },
+            {
+                route: `${paths.distWeb}/de_AT`,
+                dir: `${paths.dist}/web`,
+            },
+            {
+                route: `${paths.distWeb}/en_AT`,
+                dir: `${paths.dist}/web`,
+            },
+            {
+                route: `${paths.distWeb}/de_CH`,
+                dir: `${paths.dist}/web`,
+            },
+            {
+                route: `${paths.distWeb}/en_CH`,
+                dir: `${paths.dist}/web`,
+            },
+        ],
         files: [`${paths.dist}/**/*`],
         reloadDelay: 2000,
         injectChanges: false,
