@@ -22,6 +22,7 @@ MagesuiteRegistry.prototype.init = function(taker) {
     taker.task(require('./gulp/tasks/copyUnchanged'));
 
     taker.task(require('./gulp/tasks/clean'));
+    taker.task(require('./gulp/tasks/cleanCache'));
     taker.task(require('./gulp/tasks/browserSync'));
 
     taker.task(
@@ -36,7 +37,8 @@ MagesuiteRegistry.prototype.init = function(taker) {
                 'copyImages',
                 'copyTwig',
                 'copyUnchanged'
-            )
+            ),
+            'cleanCache'
         )
     );
 

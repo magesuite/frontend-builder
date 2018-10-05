@@ -7,7 +7,7 @@ const gulp = require('gulp');
 const paths = require('../paths');
 const environment = require('../environment');
 const settings = require('../config/copyTwig');
-const invalidateCache = require('../invalidateCache');
+const invalidateStatic = require('../invalidateStatic');
 
 /**
  * Trim dependency path from possible directory prefix.
@@ -110,6 +110,5 @@ module.exports = function copyTwig() {
                 return cb(null, file);
             })
         )
-        .pipe(invalidateCache.varPipe())
         .pipe(gulp.dest(settings.dest));
 };

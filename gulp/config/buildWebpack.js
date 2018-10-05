@@ -84,7 +84,7 @@ const settings = {
             new VueLoaderPlugin(),
         ],
         resolve: {
-            extensions: ['.tsx', '.ts', '.js', '.scss', '.css'],
+            extensions: ['.tsx', '.ts', '.js'],
             alias: parentAliases,
             modules: [
                 paths.src,

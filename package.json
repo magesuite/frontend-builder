@@ -27,6 +27,7 @@
         "mini-css-extract-plugin": "^0.4.2",
         "node-sass": "^4.9.3",
         "node-sass-json-importer": "^4.0.1",
+        "node-ssh": "^5.1.2",
         "plugin-error": "^1.0.1",
         "postcss-flexbugs-fixes": "^4.1.0",
         "postcss-loader": "^3.0.0",
