@@ -104,6 +104,7 @@ const settings = {
             'mage/translate': 'mage/translate',
             isMobile: 'isMobile',
             vendors: 'vendors',
+            bootstrapSelect: 'bootstrapSelect',
         },
         devtool: environment.development ? 'inline-source-map' : false,
         mode: environment.development ? 'development' : 'production',
