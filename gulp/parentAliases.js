@@ -23,7 +23,7 @@ const traverseAliases = themePath => {
                 [capitalize(parentName)]: path.join(parentPath, 'src'),
             };
 
-            return Object.assign(aliases, getParentAliases(parentPath));
+            return Object.assign(aliases, traverseAliases(parentPath));
         }
     }
 
