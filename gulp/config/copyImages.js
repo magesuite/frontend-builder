@@ -1,7 +1,6 @@
 // @ts-check
 const path = require('path');
 const imagemin = require('gulp-imagemin');
-const imageminGifsicle = require('imagemin-gifsicle');
 const imageminMozjpeg = require('imagemin-mozjpeg');
 const imageminPngquant = require('imagemin-pngquant');
 
