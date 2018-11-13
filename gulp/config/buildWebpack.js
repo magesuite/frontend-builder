@@ -29,7 +29,6 @@ const settings = {
                             loader: 'ts-loader',
                             options: {
                                 transpileOnly: true,
-                                experimentalFileCaching: true,
                             },
                         },
                     ],
