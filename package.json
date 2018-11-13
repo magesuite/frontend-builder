@@ -1,10 +1,9 @@
 {
-    "name": "magesuite-frontend-builder",
+    "name": "@creativestyle/magesuite-frontend-builder",
     "version": "1.0.0",
-    "repository": "git@gitlab.creativestyle.pl:m2c/theme-builder.git",
+    "repository": "https://github.com/magesuite/frontend-builder.git",
     "author": "creativestyle",
     "license": "MIT",
-    "private": true,
     "dependencies": {
         "@types/jquery": "^3.3.6",
         "autoprefixer": "^9.1.3",
