@@ -16,7 +16,7 @@
         "gulp-clean-css": "^3.10.0",
         "gulp-concat": "^2.6.1",
         "gulp-if": "^2.0.2",
-        "gulp-imagemin": "^4.1.0",
+        "gulp-imagemin": "^5.0.3",
         "gulp-sourcemaps": "^2.6.4",
         "gulp-svg-sprite": "^1.5.0",
         "gulp-task-loader": "^1.5.0",
