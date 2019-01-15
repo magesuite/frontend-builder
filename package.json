@@ -4,8 +4,12 @@
     "repository": "https://github.com/magesuite/frontend-builder.git",
     "author": "creativestyle",
     "license": "MIT",
+    "scripts": {
+        "beforeStage": "auto-changelog"
+    },
     "dependencies": {
         "@types/jquery": "^3.3.29",
+        "auto-changelog": "^1.11.0",
         "autoprefixer": "^9.4.5",
         "browser-sync": "^2.26.3",
         "css-loader": "^2.1.0",
