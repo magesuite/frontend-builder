@@ -7,7 +7,6 @@ const gulp = require('gulp');
 const paths = require('../paths');
 const environment = require('../environment');
 const settings = require('../config/copyTwig');
-// const invalidateStatic = require('../invalidateStatic');
 
 /**
  * Trim dependency path from possible directory prefix.
