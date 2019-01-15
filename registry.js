@@ -31,6 +31,7 @@ MagesuiteRegistry.prototype.init = function(taker) {
         'build',
         taker.series(
             'clean',
+            'collectViewXml',
             taker.parallel(
                 'buildWebpack',
                 'buildSprites',
