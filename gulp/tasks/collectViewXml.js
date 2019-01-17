@@ -51,23 +51,26 @@ const parseViewXml = viewXmlPath => {
             attributeNamePrefix: '',
             textNodeName: 'text',
         }).view;
+    } catch (error) {
+        console.error(error.message);
+    }
 
-        delete json.exclude;
+    delete json.exclude;
 
+    if (json.vars) {
         json.vars = json.vars.reduce ? json.vars : [json.vars];
-
         json.vars = json.vars.reduce((acc, variable) => {
             acc[variable.module] = transformVar(variable.var);
             return acc;
         }, {});
-
-        json.media.images.image = transformImage(json.media.images.image);
-
-        delete json['xmlns:xsi'];
-        delete json['xsi:noNamespaceSchemaLocation'];
-    } catch (error) {
-        console.error(error.message);
     }
+
+    if (json.media) {
+        json.media.images.image = transformImage(json.media.images.image);
+    }
+
+    delete json['xmlns:xsi'];
+    delete json['xsi:noNamespaceSchemaLocation'];
 
     return json;
 };
