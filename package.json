@@ -37,6 +37,7 @@
         "postcss-reporter": "^6.0.1",
         "postcss-scss": "^2.0.0",
         "prettier": "^1.15.3",
+        "release-it": "^10.0.0",
         "sass-loader": "^7.1.0",
         "stylelint": "^9.9.0",
         "ts-loader": "^5.3.3",
