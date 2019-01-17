@@ -1,0 +1,5 @@
+{
+    "scripts": {
+        "beforeStage": "auto-changelog"
+    }
+}
