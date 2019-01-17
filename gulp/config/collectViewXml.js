@@ -10,6 +10,7 @@ module.exports = {
         path.resolve('../../magento/theme-frontend-blank'),
         path.resolve('../magesuite-content-constructor-frontend'),
         ...Object.values(parentAliases()),
+        paths.src,
     ].map(filePath => path.join(filePath, 'etc/view.xml')),
     dest: paths.dist,
 };
