@@ -75,10 +75,29 @@ const parseViewXml = viewXmlPath => {
     return json;
 };
 
+const escapeValues = json => {
+    for (const key in json) {
+        const element = json[key];
+
+        if (
+            typeof element === 'string' &&
+            /[ !@#$%^&*()+\-=\[\]{};':"\\|,.<>\/?]/.test(element)
+        ) {
+            json[key] = `'${element}'`;
+        } else if (typeof element === 'object') {
+            json[key] = escapeValues(element);
+        }
+    }
+
+    return json;
+};
+
 module.exports = function collectViewXml(cb) {
-    const json = settings.src.reduce((json, viewXmlPath) => {
-        return merge(json, parseViewXml(viewXmlPath));
-    }, {});
+    const json = escapeValues(
+        settings.src.reduce((json, viewXmlPath) => {
+            return merge(json, parseViewXml(viewXmlPath));
+        }, {})
+    );
 
     fs.outputFile(
         path.join(paths.src, 'etc/view.json'),
