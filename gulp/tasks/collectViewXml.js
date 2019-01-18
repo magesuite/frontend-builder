@@ -75,43 +75,46 @@ const parseViewXml = viewXmlPath => {
     return json;
 };
 
-const escapeValues = json => {
-    for (const key in json) {
-        const element = json[key];
+/**
+ * Converts given JavaScript object to SCSS map.
+ * @param {object} obj Object to convert to SCSS.
+ */
+const objToScss = obj => {
+    const json = JSON.stringify(obj, null, 2);
 
-        if (
-            typeof element === 'string' &&
-            /[ !@#$%^&*()+\-=\[\]{};':"\\|,.<>\/?]/.test(element)
-        ) {
-            json[key] = `'${element}'`;
-        } else if (typeof element === 'object') {
-            json[key] = escapeValues(element);
-        }
-    }
+    return json.replace(/{/g, '(').replace(/}/g, ')');
+};
 
-    return json;
+/**
+ * Saves view.xml object to JSON.
+ * @param {object} viewXml Parsed view.xml object.
+ */
+const saveToJson = viewXml =>
+    fs.outputFile(
+        path.join(paths.src, 'etc/view.json'),
+        JSON.stringify(viewXml, null, 2)
+    );
+
+const saveToScss = viewXml => {
+    const scss = `$view-xml: ${objToScss(viewXml)};`;
+
+    return fs.outputFile(path.join(paths.src, 'etc/view.scss'), scss);
 };
 
 module.exports = function collectViewXml(cb) {
-    const json = escapeValues(
-        settings.src.reduce((json, viewXmlPath) => {
-            return merge(json, parseViewXml(viewXmlPath));
-        }, {})
-    );
+    const viewXml = settings.src.reduce((json, viewXmlPath) => {
+        return merge(json, parseViewXml(viewXmlPath));
+    }, {});
 
-    fs.outputFile(
-        path.join(paths.src, 'etc/view.json'),
-        JSON.stringify(json, null, 2),
-        error => {
-            if (error) {
-                if (!environment.watch) {
-                    throw new PluginError('collectViewXml', error.message);
-                } else {
-                    console.error(error.message);
-                }
+    saveToJson(viewXml)
+        .then(saveToScss(viewXml))
+        .then(cb)
+        .catch(err => {
+            console.log(err);
+            if (!environment.watch) {
+                // throw new PluginError('collectViewXml', error.message);
+            } else {
+                console.error(error.message);
             }
-
-            cb();
-        }
-    );
+        });
 };
