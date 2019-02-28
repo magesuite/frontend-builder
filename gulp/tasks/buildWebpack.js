@@ -1,11 +1,9 @@
-const path = require('path');
 const PluginError = require('plugin-error');
 const log = require('fancy-log');
 const webpack = require('webpack');
 
 const environment = require('../environment');
 const settings = require('../config/buildWebpack');
-// const invalidateStatic = require('../invalidateStatic');
 // Indicate if we are running the task the first time in watch mode.
 let firstRun = true;
 

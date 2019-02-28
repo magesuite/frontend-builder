@@ -55,7 +55,7 @@ const settings = {
             },
         ],
         files: [`${paths.dist}/**/*`],
-        reloadDelay: 2000,
+        reloadDelay: 500,
         injectChanges: false,
     },
 };
