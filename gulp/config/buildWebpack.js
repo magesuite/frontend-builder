@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { VueLoaderPlugin } = require('vue-loader');
+const FilterWarningsPlugin = require('webpack-filter-warnings-plugin');
 const jsonImporter = require('node-sass-json-importer');
 const merge = require('webpack-merge');
 
@@ -30,7 +31,7 @@ const settings = {
             return merge({}, config, childConfig);
         },
         {
-            entry: collectEntries(path.join(paths.src, 'entries/*.ts')),
+            entry: collectEntries('entries/*.ts'),
             output: {
                 filename: 'js/[name].js',
                 path: path.join(paths.dist, 'web'),
@@ -92,11 +93,15 @@ const settings = {
                 ],
             },
             plugins: [
+                // FIX ISSUE: https://github.com/webpack-contrib/mini-css-extract-plugin/issues/250
+                new FilterWarningsPlugin({
+                    exclude: /Conflicting order between:/,
+                }),
                 new MiniCssExtractPlugin({
                     // Options similar to the same options in webpackOptions.output
                     // both options are optional
                     filename: 'css/[name].css',
-                    chunkFilename: '[id].css',
+                    chunkFilename: 'css/[name].css',
                 }),
                 new VueLoaderPlugin(),
             ],
@@ -126,6 +131,17 @@ const settings = {
             devtool: environment.development ? 'inline-source-map' : false,
             mode: environment.development ? 'development' : 'production',
             watch: environment.watch,
+            optimization: {
+                splitChunks: {
+                    cacheGroups: {
+                        commons: {
+                            name: 'commons',
+                            chunks: 'initial',
+                            minChunks: 5,
+                        },
+                    },
+                },
+            },
         }
     ),
 };

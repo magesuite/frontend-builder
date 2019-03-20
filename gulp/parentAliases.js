@@ -30,6 +30,14 @@ const traverseAliases = themePath => {
     return {};
 };
 
-const parentAliases = () => traverseAliases(path.resolve('.'));
+const aliasesCache = {};
+
+const parentAliases = (themePath = path.resolve('.')) => {
+    if (!aliasesCache[themePath]) {
+        aliasesCache[themePath] = traverseAliases(themePath);
+    }
+
+    return aliasesCache[themePath];
+};
 
 module.exports = parentAliases;

@@ -1,10 +1,20 @@
 const glob = require('glob');
 const path = require('path');
 
+const paths = require('./paths');
+const parentAliases = require('./parentAliases')();
+
 module.exports = pathGlob => {
     const entries = {};
-    glob.sync(pathGlob).forEach(file => {
-        entries[path.basename(file, '.ts')] = file;
+
+    const themeGlobs = [...Object.values(parentAliases), paths.src].map(
+        themeSrcPath => path.join(themeSrcPath, pathGlob)
+    );
+
+    themeGlobs.forEach(themeGlob => {
+        glob.sync(themeGlob).forEach(file => {
+            entries[path.basename(file, '.ts')] = file;
+        });
     });
 
     return entries;
