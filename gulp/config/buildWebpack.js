@@ -1,10 +1,12 @@
-const fs = require('fs');
+const fs = require('fs-extra');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { VueLoaderPlugin } = require('vue-loader');
 const FilterWarningsPlugin = require('webpack-filter-warnings-plugin');
 const jsonImporter = require('node-sass-json-importer');
 const merge = require('webpack-merge');
+
+const SkipUnchangedPlugin = require('../skipUnchangedPlugin');
 
 const environment = require('../environment');
 const paths = require('../paths');
@@ -104,6 +106,8 @@ const settings = {
                     chunkFilename: 'css/[name].css',
                 }),
                 new VueLoaderPlugin(),
+
+                new SkipUnchangedPlugin(),
             ],
             resolve: {
                 extensions: ['.tsx', '.ts', '.js'],
@@ -128,7 +132,7 @@ const settings = {
                 vendors: 'vendors',
                 bootstrapSelect: 'bootstrapSelect',
             },
-            devtool: environment.development ? 'inline-source-map' : false,
+            devtool: false,
             mode: environment.development ? 'development' : 'production',
             watch: environment.watch,
             optimization: {

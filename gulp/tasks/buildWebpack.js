@@ -15,7 +15,7 @@ module.exports = function buildWebpack(done) {
     const compiler = webpack(settings.webpack);
     const callback = (error, stats) => {
         if (error) {
-            throw new PluginError('webpack', err);
+            throw new PluginError('webpack', error);
         }
         log(
             stats.toString({

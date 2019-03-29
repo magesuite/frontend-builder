@@ -55,8 +55,8 @@ const settings = {
             },
         ],
         files: [`${paths.dist}/**/*`],
-        reloadDelay: 500,
-        injectChanges: false,
+        reloadDelay: 1000,
+        cors: true,
     },
 };
 
