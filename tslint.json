@@ -2,7 +2,6 @@
     "extends": ["tslint:latest", "tslint-config-prettier"],
     "rulesDirectory": ["tslint-plugin-prettier"],
     "rules": {
-        "indent": [true, "spaces", 4],
         "variable-name": false,
         "only-arrow-functions": false,
         "no-this-assignment": false,
@@ -15,15 +14,6 @@
         "object-literal-shorthand": false,
         "no-shadowed-variable": false,
         "no-submodule-imports": false,
-        "no-implicit-dependencies": false,
-        "prettier": [
-            true,
-            {
-                "singleQuote": true,
-                "trailingComma": "es5",
-                "bracketSpacing": true,
-                "tabWidth": 4
-            }
-        ]
+        "no-implicit-dependencies": false
     }
 }

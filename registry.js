@@ -27,8 +27,6 @@ MagesuiteRegistry.prototype.init = function(taker) {
     taker.task(require('./gulp/tasks/cleanCache'));
     taker.task(require('./gulp/tasks/browserSync'));
 
-    taker.task(require('./gulp/tasks/lintStyles'));
-
     taker.task(
         'build',
         taker.series(
