@@ -71,6 +71,13 @@ const settings = {
                                     plugins: [
                                         require('postcss-flexbugs-fixes')(),
                                         require('autoprefixer')(),
+                                        ...(environment.production
+                                            ? [
+                                                  require('postcss-clean')({
+                                                      level: 2,
+                                                  }),
+                                              ]
+                                            : []),
                                     ],
                                 },
                             },
