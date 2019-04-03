@@ -141,7 +141,7 @@ const settings = {
                         commons: {
                             name: 'commons',
                             chunks: 'initial',
-                            minChunks: 5,
+                            minChunks: 6,
                         },
                     },
                 },
