@@ -12,6 +12,7 @@ const paths = require('../paths');
 let firstRun = true;
 
 const transformImage = imageArray => {
+    console.log(imageArray);
     return imageArray.reduce((acc, image) => {
         acc[image.id] = image;
         return acc;
@@ -66,7 +67,11 @@ const parseViewXml = viewXmlPath => {
     }
 
     if (json.media) {
-        json.media.images.image = transformImage(json.media.images.image);
+        json.media.images.image = transformImage(
+            Array.isArray(json.media.images.image)
+                ? json.media.images.image
+                : [json.media.images.image]
+        );
     }
 
     delete json['xmlns:xsi'];
