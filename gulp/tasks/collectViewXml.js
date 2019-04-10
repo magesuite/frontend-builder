@@ -12,7 +12,6 @@ const paths = require('../paths');
 let firstRun = true;
 
 const transformImage = imageArray => {
-    console.log(imageArray);
     return imageArray.reduce((acc, image) => {
         acc[image.id] = image;
         return acc;
