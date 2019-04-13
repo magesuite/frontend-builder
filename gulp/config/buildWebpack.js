@@ -45,6 +45,9 @@ const settings = {
                     {
                         test: /\.tsx?$/,
                         use: [
+                            ...(environment.development
+                                ? ['cache-loader']
+                                : []),
                             {
                                 loader: 'ts-loader',
                                 options: {
@@ -56,6 +59,9 @@ const settings = {
                     {
                         test: /\.scss$/,
                         use: [
+                            ...(environment.development
+                                ? ['cache-loader']
+                                : []),
                             MiniCssExtractPlugin.loader,
                             {
                                 loader: 'css-loader',
@@ -155,7 +161,7 @@ const settings = {
                 vendors: 'vendors',
                 bootstrapSelect: 'bootstrapSelect',
             },
-            devtool: false,
+            devtool: environment.development ? 'eval-source-map' : false,
             mode: environment.development ? 'development' : 'production',
             watch: environment.watch,
             optimization: {

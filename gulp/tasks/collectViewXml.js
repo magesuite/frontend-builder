@@ -113,12 +113,5 @@ module.exports = function collectViewXml(cb) {
     saveToJson(viewXml)
         .then(saveToScss(viewXml))
         .then(cb)
-        .catch(err => {
-            console.log(err);
-            if (!environment.watch) {
-                // throw new PluginError('collectViewXml', error.message);
-            } else {
-                console.error(error.message);
-            }
-        });
+        .catch(err => {});
 };
