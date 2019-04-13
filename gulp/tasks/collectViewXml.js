@@ -1,11 +1,8 @@
-const gulp = require('gulp');
 const path = require('path');
 const parser = require('fast-xml-parser');
 const merge = require('lodash.merge');
 const fs = require('fs-extra');
-const PluginError = require('plugin-error');
 
-const environment = require('../environment');
 const settings = require('../config/collectViewXml');
 const paths = require('../paths');
 
