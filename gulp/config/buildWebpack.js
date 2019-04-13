@@ -161,7 +161,9 @@ const settings = {
                 vendors: 'vendors',
                 bootstrapSelect: 'bootstrapSelect',
             },
-            devtool: environment.development ? 'eval-source-map' : false,
+            devtool: environment.development
+                ? 'inline-cheap-module-source-map'
+                : false,
             mode: environment.development ? 'development' : 'production',
             watch: environment.watch,
             optimization: {
