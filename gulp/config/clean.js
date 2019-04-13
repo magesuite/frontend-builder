@@ -9,5 +9,5 @@ module.exports = {
     /**
      * Paths that should be deleted.
      */
-    src: [path.join(paths.dist, '**/*'), path.join(paths.src, '.cache-loader')],
+    src: [path.join(paths.dist, '**/*'), path.resolve('.cache-loader')],
 };
