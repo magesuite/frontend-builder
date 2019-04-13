@@ -48,9 +48,7 @@ const parseViewXml = viewXmlPath => {
             attributeNamePrefix: '',
             textNodeName: 'text',
         }).view;
-    } catch (error) {
-        console.error(error.message);
-    }
+    } catch (error) {}
 
     delete json.exclude;
 
