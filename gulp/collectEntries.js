@@ -7,9 +7,10 @@ const parentAliases = require('./parentAliases')();
 module.exports = pathGlob => {
     const entries = {};
 
-    const themeGlobs = [...Object.values(parentAliases), paths.src].map(
-        themeSrcPath => path.join(themeSrcPath, pathGlob)
-    );
+    const themeGlobs = [
+        ...Object.values(parentAliases).reverse(),
+        paths.src,
+    ].map(themeSrcPath => path.join(themeSrcPath, pathGlob));
 
     themeGlobs.forEach(themeGlob => {
         glob.sync(themeGlob).forEach(file => {
