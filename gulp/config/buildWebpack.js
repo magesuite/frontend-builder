@@ -106,13 +106,16 @@ const settings = {
                             {
                                 loader: 'sass-loader',
                                 options: {
-                                    sourceMap: environment.development,
-                                    includePaths: [
-                                        paths.src,
-                                        'node_modules',
-                                        ...Object.values(parentAliases),
-                                    ],
-                                    importer: jsonImporter(),
+                                    // sourceMap: environment.development,
+                                    sassOptions: {
+                                        includePaths: [
+                                            paths.src,
+                                            'node_modules',
+                                            ...Object.values(parentAliases),
+                                        ],
+                                        importer: jsonImporter(),
+                                    },
+                                    webpackImporter: false,
                                 },
                             },
                         ],
