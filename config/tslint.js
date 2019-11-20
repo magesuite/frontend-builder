@@ -1,0 +1,25 @@
+module.exports = {
+    extends: [
+        'tslint:latest',
+        'tslint-eslint-rules-recommended',
+        'tslint-config-prettier',
+    ],
+    rulesDirectory: ['tslint-plugin-prettier'],
+    rules: {
+        'variable-name': false,
+        'only-arrow-functions': false,
+        'no-this-assignment': false,
+        'prefer-for-of': false,
+        'interface-name': false,
+        'ordered-imports': false,
+        'object-literal-sort-keys': false,
+        'no-unused-expression': false,
+        'class-name': false,
+        'object-literal-shorthand': false,
+        'no-shadowed-variable': false,
+        'no-submodule-imports': false,
+        'no-implicit-dependencies': false,
+    },
+    jsRules: true,
+    linterOptions: { exclude: ['src/**/vendor', 'src/**/vendors'] },
+};
