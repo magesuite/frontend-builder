@@ -12,4 +12,5 @@ module.exports = {
         'scss/dollar-variable-no-missing-interpolation': true,
         'scss/dollar-variable-colon-space-after': 'always-single-line',
     },
+    ignoreFiles: ['src/etc/**/*', 'src/**/vendors/**/*', 'src/**/vendor/**/*'],
 };

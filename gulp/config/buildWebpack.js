@@ -77,29 +77,6 @@ const settings = {
                                     plugins: [
                                         require('postcss-flexbugs-fixes')(),
                                         require('autoprefixer')(),
-                                        ...(environment.production
-                                            ? [
-                                                  require('postcss-clean')({
-                                                      level: {
-                                                          1: true,
-                                                          2: {
-                                                              all: false,
-                                                              removeDuplicateRules: true,
-                                                              reduceNonAdjacentRules: true,
-                                                              removeDuplicateFontRules: true,
-                                                              removeDuplicateMediaBlocks: true,
-                                                              mergeAdjacentRules: true,
-                                                              mergeIntoShorthands: true,
-                                                              mergeMedia: true,
-                                                              mergeNonAdjacentRules: true,
-                                                              mergeSemantically: false,
-                                                              removeEmpty: true,
-                                                          },
-                                                      },
-                                                      format: 'beautify',
-                                                  }),
-                                              ]
-                                            : []),
                                     ],
                                 },
                             },
