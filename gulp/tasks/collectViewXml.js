@@ -6,9 +6,8 @@ const fs = require('fs-extra');
 const settings = require('../config/collectViewXml');
 const paths = require('../paths');
 
-let firstRun = true;
-
 const transformImage = imageArray => {
+    imageArray = Array.isArray(imageArray) ? imageArray : [imageArray];
     return imageArray.reduce((acc, image) => {
         acc[image.id] = image;
         return acc;
@@ -61,11 +60,22 @@ const parseViewXml = viewXmlPath => {
     }
 
     if (json.media) {
-        json.media.images.image = transformImage(
-            Array.isArray(json.media.images.image)
-                ? json.media.images.image
-                : [json.media.images.image]
-        );
+        // When there are images defined for only one module.
+        if (json.media.images.image) {
+            json.media.images.image = transformImage(json.media.images.image);
+            // When there are images defined for multiple modules.
+        } else if (Array.isArray(json.media.images)) {
+            json.media.images = json.media.images.reduce(
+                (images, module) => {
+                    images.image = images.image.concat(
+                        transformImage(module.image)
+                    );
+                    return images;
+                },
+                { image: [] }
+            );
+        }
+        delete json.media.images['module'];
     }
 
     delete json['xmlns:xsi'];
