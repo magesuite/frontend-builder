@@ -83,7 +83,6 @@ const settings = {
                             {
                                 loader: 'sass-loader',
                                 options: {
-                                    // sourceMap: environment.development,
                                     sassOptions: {
                                         includePaths: [
                                             paths.src,
@@ -92,7 +91,6 @@ const settings = {
                                         ],
                                         importer: jsonImporter(),
                                     },
-                                    webpackImporter: false,
                                 },
                             },
                         ],
