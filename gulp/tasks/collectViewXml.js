@@ -67,12 +67,12 @@ const parseViewXml = viewXmlPath => {
         } else if (Array.isArray(json.media.images)) {
             json.media.images = json.media.images.reduce(
                 (images, module) => {
-                    images.image = images.image.concat(
-                        transformImage(module.image)
-                    );
+                    images.image = images.image[
+                        module.image.id
+                    ] = transformImage(module.image);
                     return images;
                 },
-                { image: [] }
+                { image: {} }
             );
         }
         delete json.media.images['module'];
