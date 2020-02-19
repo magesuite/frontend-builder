@@ -12,7 +12,7 @@ const ssh = new nodeSSH();
 module.exports = function cleanCache(done) {
     if (!environment.development) {
         log.info(
-            'Shipping clearing the cache since we are not in development mode.'
+            'Skipping clearing the cache since we are not in development mode.'
         );
         done();
         return;

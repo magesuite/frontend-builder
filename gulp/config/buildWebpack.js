@@ -77,6 +77,18 @@ const settings = {
                                     plugins: [
                                         require('postcss-flexbugs-fixes')(),
                                         require('autoprefixer')(),
+                                        ...(environment.development
+                                            ? []
+                                            : [
+                                                  require('cssnano')({
+                                                      preset: [
+                                                          'default',
+                                                          {
+                                                              cssDeclarationSorter: true,
+                                                          },
+                                                      ],
+                                                  }),
+                                              ]),
                                     ],
                                 },
                             },
@@ -104,13 +116,14 @@ const settings = {
             plugins: [
                 // FIX ISSUE: https://github.com/webpack-contrib/mini-css-extract-plugin/issues/250
                 new FilterWarningsPlugin({
-                    exclude: /Conflicting order between:/,
+                    exclude: /Conflicting order/,
                 }),
                 new MiniCssExtractPlugin({
                     // Options similar to the same options in webpackOptions.output
                     // both options are optional
                     filename: 'css/[name].css',
                     chunkFilename: 'css/[name].css',
+                    ignoreOrder: true,
                 }),
                 new VueLoaderPlugin(),
 
@@ -149,7 +162,7 @@ const settings = {
                     cacheGroups: {
                         commons: {
                             name: 'commons',
-                            chunks: 'initial',
+                            chunks: chunk => chunk.name !== 'critical',
                             minChunks: 6,
                         },
                     },
