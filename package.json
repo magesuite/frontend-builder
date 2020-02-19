@@ -5,8 +5,8 @@
     "author": "creativestyle",
     "license": "MIT",
     "release-it": {
-        "scripts": {
-            "beforeStage": "auto-changelog"
+        "hooks": {
+            "before:release": "auto-changelog -p"
         }
     },
     "dependencies": {
