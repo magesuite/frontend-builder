@@ -2,7 +2,7 @@ const fs = require('fs-extra');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { VueLoaderPlugin } = require('vue-loader');
-const FilterWarningsPlugin = require('webpack-filter-warnings-plugin');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const jsonImporter = require('node-sass-json-importer');
 const merge = require('webpack-merge');
 
@@ -77,18 +77,6 @@ const settings = {
                                     plugins: [
                                         require('postcss-flexbugs-fixes')(),
                                         require('autoprefixer')(),
-                                        ...(environment.development
-                                            ? []
-                                            : [
-                                                  require('cssnano')({
-                                                      preset: [
-                                                          'default',
-                                                          {
-                                                              cssDeclarationSorter: true,
-                                                          },
-                                                      ],
-                                                  }),
-                                              ]),
                                     ],
                                 },
                             },
@@ -114,10 +102,6 @@ const settings = {
                 ],
             },
             plugins: [
-                // FIX ISSUE: https://github.com/webpack-contrib/mini-css-extract-plugin/issues/250
-                new FilterWarningsPlugin({
-                    exclude: /Conflicting order/,
-                }),
                 new MiniCssExtractPlugin({
                     // Options similar to the same options in webpackOptions.output
                     // both options are optional
@@ -125,9 +109,23 @@ const settings = {
                     chunkFilename: 'css/[name].css',
                     ignoreOrder: true,
                 }),
-                new VueLoaderPlugin(),
 
+                new VueLoaderPlugin(),
                 new SkipUnchangedPlugin(),
+
+                ...(environment.development
+                    ? []
+                    : [
+                          new OptimizeCssAssetsPlugin({
+                              cssProcessorPluginOptions: {
+                                  preset: [
+                                      'default',
+                                      { discardComments: { removeAll: true } },
+                                  ],
+                              },
+                              canPrint: true,
+                          }),
+                      ]),
             ],
             resolve: {
                 extensions: ['.tsx', '.ts', '.js'],
@@ -158,15 +156,15 @@ const settings = {
             mode: environment.development ? 'development' : 'production',
             watch: environment.watch,
             optimization: {
-                splitChunks: {
-                    cacheGroups: {
-                        commons: {
-                            name: 'commons',
-                            chunks: chunk => chunk.name !== 'critical',
-                            minChunks: 6,
-                        },
-                    },
-                },
+                // splitChunks: {
+                //     cacheGroups: {
+                //         commons: {
+                //             name: 'commons',
+                //             chunks: chunk => chunk.name !== 'critical',
+                //             minChunks: 6,
+                //         },
+                //     },
+                // },
             },
         }
     ),

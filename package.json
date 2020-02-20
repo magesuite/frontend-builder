@@ -16,7 +16,6 @@
         "browser-sync": "^2.26.7",
         "cache-loader": "^4.1.0",
         "css-loader": "^3.4.2",
-        "cssnano": "^4.1.10",
         "del": "^5.1.0",
         "eslint": "^6.8.0",
         "eslint-plugin-prettier": "^3.1.2",
@@ -39,6 +38,7 @@
         "node-sass": "^4.13.1",
         "node-sass-json-importer": "^4.1.2",
         "node-ssh": "^7.0.0",
+        "optimize-css-assets-webpack-plugin": "^5.0.3",
         "plugin-error": "^1.0.1",
         "postcss-flexbugs-fixes": "^4.2.0",
         "postcss-loader": "^3.0.0",
@@ -60,7 +60,6 @@
         "typescript": "^3.7.5",
         "vue-loader": "^15.9.0",
         "webpack": "^4.41.6",
-        "webpack-filter-warnings-plugin": "^1.2.1",
         "webpack-log": "^3.0.1",
         "webpack-merge": "^4.2.2",
         "yargs": "^15.1.0"
