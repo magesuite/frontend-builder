@@ -31,6 +31,7 @@
         "husky": "^4.2.3",
         "imagemin-mozjpeg": "^8.0.0",
         "imagemin-pngquant": "^8.0.0",
+        "javascript-stringify": "^2.0.1",
         "lint-staged": "^10.0.7",
         "lodash.merge": "^4.6.2",
         "map-stream": "^0.0.7",

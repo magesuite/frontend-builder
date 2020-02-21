@@ -120,7 +120,10 @@ const settings = {
                               cssProcessorPluginOptions: {
                                   preset: [
                                       'default',
-                                      { discardComments: { removeAll: true } },
+                                      {
+                                          discardComments: { removeAll: true },
+                                          calc: false,
+                                      },
                                   ],
                               },
                               canPrint: true,
@@ -155,17 +158,6 @@ const settings = {
                 : false,
             mode: environment.development ? 'development' : 'production',
             watch: environment.watch,
-            optimization: {
-                // splitChunks: {
-                //     cacheGroups: {
-                //         commons: {
-                //             name: 'commons',
-                //             chunks: chunk => chunk.name !== 'critical',
-                //             minChunks: 6,
-                //         },
-                //     },
-                // },
-            },
         }
     ),
 };

@@ -2,6 +2,7 @@ const path = require('path');
 const parser = require('fast-xml-parser');
 const merge = require('lodash.merge');
 const fs = require('fs-extra');
+const { stringify } = require('javascript-stringify');
 
 const settings = require('../config/collectViewXml');
 const paths = require('../paths');
@@ -20,12 +21,14 @@ const transformVar = (varArray = []) => {
     }
 
     return varArray.reduce((acc, varObject) => {
+        if (!varObject.var && !varObject.text) {
+            return acc;
+        }
+
         if (varObject.var && !varObject.text) {
             acc[varObject.name] = transformVar(varObject.var);
         } else if (!varObject.var && varObject.text) {
             acc[varObject.name] = varObject.text;
-        } else if (!varObject.var && !varObject.text) {
-            acc[varObject.name] = null;
         } else {
             acc[varObject.name] = {
                 text: varObject.text,
@@ -104,6 +107,17 @@ const saveToJson = viewXml =>
         JSON.stringify(viewXml, null, 2)
     );
 
+/**
+ * Saves view.xml object to TypeScript file.
+ * @param {object} viewXml Parsed view.xml object.
+ */
+const saveToTypeScript = viewXml =>
+    fs.outputFile(
+        path.join(paths.src, 'etc/view.ts'),
+        'export default ' +
+            stringify(viewXml, null, 2, { skipUndefinedProperties: true })
+    );
+
 const saveToScss = viewXml => {
     const scss = `$view-xml: ${objToScss(viewXml)};`;
 
@@ -116,6 +130,7 @@ module.exports = function collectViewXml(cb) {
     }, {});
 
     saveToJson(viewXml)
+        .then(saveToTypeScript(viewXml))
         .then(saveToScss(viewXml))
         .then(cb)
         .catch(err => {});
