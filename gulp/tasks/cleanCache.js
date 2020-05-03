@@ -32,6 +32,8 @@ module.exports = function cleanCache(done) {
             host: connection.host,
             username: connection.username,
             privateKey: connection.privateKey,
+            agent: process.env.SSH_AUTH_SOCK,
+            agentForward: Boolean(process.env.SSH_AUTH_SOCK),
         })
             .then(() =>
                 ssh.execCommand(command, {
