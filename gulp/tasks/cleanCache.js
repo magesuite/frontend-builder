@@ -1,7 +1,7 @@
 const gulp = require('gulp');
 const log = require('fancy-log');
-const path = require('path');
 const nodeSSH = require('node-ssh');
+const { exec } = require('child_process');
 
 const environment = require('../environment');
 const settings = require('../config/cleanCache');
@@ -24,30 +24,56 @@ module.exports = function cleanCache(done) {
         gulp.watch(settings.watch, cleanCache);
     }
 
-    ssh.connect({
-        host: 'creativeshop.me',
-        username: 'magento2',
-        privateKey: path.resolve(
-            '../../../../../vagrant/ssh/creativeshop_vagrant.key'
-        ),
-    })
-        .then(() =>
-            ssh.execCommand(
-                `bin/magento cache:clean ${settings.cacheTypes.join(' ')}`,
-                {
-                    cwd: '/var/www/creativeshop/current',
-                }
-            )
-        )
-        .then(result => {
-            ssh.dispose();
-            log.info(result.stdout.replace(/\n/g, ' '));
-            done();
+    const connection = settings.magentoConnection;
+    const command = `bin/magento cache:clean ${settings.cacheTypes.join(' ')}`;
+
+    if (connection.type === 'ssh') {
+        ssh.connect({
+            host: connection.host,
+            username: connection.username,
+            privateKey: connection.privateKey,
         })
-        .catch(error => {
-            ssh.dispose();
-            log.error('Could not SSH to creativeshop.me to clean the cache.');
-            log.error(error.message);
-            done();
-        });
+            .then(() =>
+                ssh.execCommand(command, {
+                    cwd: connection.path,
+                })
+            )
+            .then(result => {
+                ssh.dispose();
+                log.info(result.stdout.replace(/\n/g, ' '));
+                done();
+            })
+            .catch(error => {
+                ssh.dispose();
+                log.error(
+                    `Could not SSH to ${connection.host} to clean the cache.`
+                );
+                log.error(error.message);
+                done();
+            });
+        return;
+    }
+
+    if (connection.type === 'local') {
+        exec(
+            command,
+            {
+                cwd: connection.path,
+            },
+            (error, stdout) => {
+                if (error) {
+                    log.error(`Could not clean the cache.`);
+                    log.error(error.message);
+                } else {
+                    log.info(stdout.replace(/\n/g, ' '));
+                }
+                done();
+            }
+        );
+        return;
+    }
+
+    throw new TypeError(
+        `Unknown \`config.cleanCache.magentoConnection.type\` value: ${connection.type}`
+    );
 };
