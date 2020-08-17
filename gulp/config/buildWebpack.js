@@ -27,8 +27,7 @@ const settings = {
             );
             let childConfig = {};
             try {
-                fs.existsSync(parentConfigPath);
-                childConfig =  require(parentConfigPath);
+                childConfig = require(parentConfigPath);
             } catch (error) {}
 
             return merge({}, config, childConfig);
