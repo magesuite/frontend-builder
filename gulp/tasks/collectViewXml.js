@@ -7,7 +7,7 @@ const { stringify } = require('javascript-stringify');
 const settings = require('../config/collectViewXml');
 const paths = require('../paths');
 
-const transformImage = imageArray => {
+const transformImage = (imageArray) => {
     imageArray = Array.isArray(imageArray) ? imageArray : [imageArray];
     return imageArray.reduce((acc, image) => {
         acc[image.id] = image;
@@ -21,13 +21,13 @@ const transformVar = (varArray = []) => {
     }
 
     return varArray.reduce((acc, varObject) => {
-        if (!varObject.var && !varObject.text) {
+        if (!varObject.var && typeof varObject.text === 'undefined') {
             return acc;
         }
 
-        if (varObject.var && !varObject.text) {
+        if (varObject.var && typeof varObject.text === 'undefined') {
             acc[varObject.name] = transformVar(varObject.var);
-        } else if (!varObject.var && varObject.text) {
+        } else if (!varObject.var && typeof varObject.text !== 'undefined') {
             acc[varObject.name] = varObject.text;
         } else {
             acc[varObject.name] = {
@@ -40,7 +40,7 @@ const transformVar = (varArray = []) => {
     }, {});
 };
 
-const parseViewXml = viewXmlPath => {
+const parseViewXml = (viewXmlPath) => {
     let json = {};
 
     try {
@@ -91,7 +91,7 @@ const parseViewXml = viewXmlPath => {
  * Converts given JavaScript object to SCSS map.
  * @param {object} obj Object to convert to SCSS.
  */
-const objToScss = obj => {
+const objToScss = (obj) => {
     const json = JSON.stringify(obj, null, 2);
 
     return json.replace(/{/g, '(').replace(/}/g, ')');
@@ -101,7 +101,7 @@ const objToScss = obj => {
  * Saves view.xml object to JSON.
  * @param {object} viewXml Parsed view.xml object.
  */
-const saveToJson = viewXml =>
+const saveToJson = (viewXml) =>
     fs.outputFile(
         path.join(paths.src, 'etc/view.json'),
         JSON.stringify(viewXml, null, 2)
@@ -111,14 +111,14 @@ const saveToJson = viewXml =>
  * Saves view.xml object to TypeScript file.
  * @param {object} viewXml Parsed view.xml object.
  */
-const saveToTypeScript = viewXml =>
+const saveToTypeScript = (viewXml) =>
     fs.outputFile(
         path.join(paths.src, 'etc/view.ts'),
         'export default ' +
             stringify(viewXml, null, 2, { skipUndefinedProperties: true })
     );
 
-const saveToScss = viewXml => {
+const saveToScss = (viewXml) => {
     const scss = `$view-xml: ${objToScss(viewXml)};`;
 
     return fs.outputFile(path.join(paths.src, 'etc/view.scss'), scss);
@@ -133,5 +133,5 @@ module.exports = function collectViewXml(cb) {
         .then(saveToTypeScript(viewXml))
         .then(saveToScss(viewXml))
         .then(cb)
-        .catch(err => {});
+        .catch((err) => {});
 };
