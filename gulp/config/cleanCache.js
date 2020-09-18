@@ -22,12 +22,9 @@ module.exports = {
      */
     magentoConnection: {
         type: 'ssh',
-        host: 'creativeshop.me',
-        username: 'magento2',
-        privateKey: path.resolve(
-            '../../../../../vagrant/ssh/creativeshop_vagrant.key'
-        ),
-        path: '/var/www/creativeshop/current',
+        host: 'magesuite.me',
+        username: 'magento',
+        path: '/var/www/magento/current',
     },
 
     watch: [
