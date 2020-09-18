@@ -12,11 +12,11 @@ const settings = {
     browserSync: {
         open: argv.open,
         proxy: {
-            target: 'http://creativeshop.me',
+            target: 'http://magesuite.me',
         },
         rewriteRules: [
             {
-                match: '.creativeshop.me',
+                match: '.magesuite.me',
                 replace: '',
             },
         ],
