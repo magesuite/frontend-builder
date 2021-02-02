@@ -66,13 +66,13 @@ const parseViewXml = (viewXmlPath) => {
         // When there are images defined for only one module.
         if (json.media.images.image) {
             json.media.images.image = transformImage(json.media.images.image);
-            // When there are images defined for multiple modules.
+        // When there are images defined for multiple modules.
         } else if (Array.isArray(json.media.images)) {
             json.media.images = json.media.images.reduce(
                 (images, module) => {
-                    images.image = images.image[
-                        module.image.id
-                    ] = transformImage(module.image);
+                    images.image = Object.assign(
+                        images.image, 
+                        images.image[module.image.id] = transformImage(module.image));
                     return images;
                 },
                 { image: {} }
