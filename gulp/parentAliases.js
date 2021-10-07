@@ -15,7 +15,7 @@ const traverseAliases = themePath => {
     );
 
     if (parentMatch) {
-        const parentVendor = parentMatch[1]
+        const parentVendor = parentMatch[1].toLowerCase();
         const parentName = parentMatch[2];
         const parentPath = path.resolve(`../../${parentVendor}/theme-${parentName}`);
 
