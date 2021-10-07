@@ -11,12 +11,13 @@ const traverseAliases = themePath => {
     );
 
     const parentMatch = themeXML.match(
-        /<parent>[a-z]+\/[^\-]+\-([a-z]+)<\/parent>/i
+        /<parent>([a-z]+)\/[^\-]+\-([a-z]+)<\/parent>/i
     );
 
     if (parentMatch) {
-        const parentName = parentMatch[1];
-        const parentPath = path.resolve(`../theme-${parentName}`);
+        const parentVendor = parentMatch[1]
+        const parentName = parentMatch[2];
+        const parentPath = path.resolve(`../../${parentVendor}/theme-${parentName}`);
 
         if (fs.existsSync(parentPath)) {
             const aliases = {
