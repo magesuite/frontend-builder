@@ -27,7 +27,7 @@ const settings = {
             );
             let childConfig = {};
             try {
-                childConfig = fs.readFileSync(parentConfigPath, 'utf-8');
+                childConfig = require(parentConfigPath);
             } catch (error) {}
 
             return merge({}, config, childConfig);
