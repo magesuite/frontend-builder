@@ -12,7 +12,7 @@
     "dependencies": {
         "@types/jquery": "^3.3.36",
         "@types/requirejs": "^2.1.31",
-        "autoprefixer": "^9.7.6",
+        "autoprefixer": "^9.8.0",
         "browser-sync": "^2.26.7",
         "cache-loader": "^4.1.0",
         "css-loader": "^5.0.0",
