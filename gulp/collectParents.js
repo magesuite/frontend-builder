@@ -11,7 +11,7 @@ const traverseParents = themePath => {
     );
 
     const parentMatch = themeXML.match(
-        /<parent>[a-z]+\/[^\-]+\-([a-z]+)<\/parent>/i
+        /<parent>[a-z0-9]+\/[^\-]+\-([a-z0-9]+)<\/parent>/i
     );
 
     if (parentMatch) {
