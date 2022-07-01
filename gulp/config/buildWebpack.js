@@ -1,7 +1,6 @@
 const fs = require('fs-extra');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { VueLoaderPlugin } = require('vue-loader');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const jsonImporter = require('node-sass-json-importer');
 const merge = require('webpack-merge');
@@ -95,10 +94,6 @@ const settings = {
                             },
                         ],
                     },
-                    {
-                        test: /\.vue$/,
-                        use: 'vue-loader',
-                    },
                 ],
             },
             plugins: [
@@ -110,7 +105,6 @@ const settings = {
                     ignoreOrder: true,
                 }),
 
-                new VueLoaderPlugin(),
                 new SkipUnchangedPlugin(),
 
                 ...(environment.development
