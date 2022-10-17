@@ -2,7 +2,10 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
-<!-- Partly enerated by [`auto-changelog`](https://github.com/CookPete/auto-changelog). -->
+#### [3.1.0](https://gitlab.creativestyle.pl/m2c/magesuite-frontend-builder/compare/3.0.0...3.1.0)
+
+> 10 October 2022
+- Added documentation copy task
 
 #### [3.0.0](https://gitlab.creativestyle.pl/m2c/magesuite-frontend-builder/compare/2.6.0...3.0.0)
 
