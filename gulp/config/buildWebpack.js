@@ -150,6 +150,18 @@ const settings = {
                 ? 'inline-cheap-module-source-map'
                 : false,
             mode: environment.development ? 'development' : 'production',
+            optimization: {
+                splitChunks: {
+                    cacheGroups: {
+                        commons: {
+                            name: 'commons',
+                            chunks: 'initial',
+                            minChunks: 5,
+                        },
+                    },
+                },
+            },
+
             watch: environment.watch,
         }
     ),
