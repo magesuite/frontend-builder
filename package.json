@@ -1,6 +1,6 @@
 {
     "name": "@creativestyle/magesuite-frontend-builder",
-    "version": "3.1.0",
+    "version": "3.1.0-feature-chunks-split",
     "repository": "https://github.com/magesuite/frontend-builder.git",
     "author": "creativestyle",
     "license": "MIT",
