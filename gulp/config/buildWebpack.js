@@ -151,6 +151,17 @@ const settings = {
                 : false,
             mode: environment.development ? 'development' : 'production',
             watch: environment.watch,
+            optimization: {
+                splitChunks: {
+                    cacheGroups: {
+                        commons: {
+                            name: 'commons',
+                            chunks: 'initial',
+                            minChunks: 5,
+                        },
+                    },
+                },
+            },
         }
     ),
 };
