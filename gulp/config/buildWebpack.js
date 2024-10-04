@@ -43,9 +43,6 @@ const settings = {
                     {
                         test: /\.tsx?$/,
                         use: [
-                            ...(environment.development
-                                ? ['cache-loader']
-                                : []),
                             {
                                 loader: 'ts-loader',
                                 options: {
@@ -57,9 +54,6 @@ const settings = {
                     {
                         test: /\.scss$/,
                         use: [
-                            ...(environment.development
-                                ? ['cache-loader']
-                                : []),
                             MiniCssExtractPlugin.loader,
                             {
                                 loader: 'css-loader',
