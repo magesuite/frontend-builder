@@ -36,8 +36,6 @@
         "lodash.merge": "^4.6.2",
         "map-stream": "^0.0.7",
         "mini-css-extract-plugin": "^1.0.0",
-        "node-sass": "^9.0.0",
-        "node-sass-json-importer": "^4.3.0",
         "node-ssh": "^8.0.0",
         "optimize-css-assets-webpack-plugin": "^6.0.0",
         "plugin-error": "^1.0.1",
@@ -64,8 +62,5 @@
         "webpack-log": "^3.0.1",
         "webpack-merge": "^4.2.2",
         "yargs": "^15.3.1"
-    },
-    "resolutions": {
-        "node-gyp": "^10.2.0"
     }
 }

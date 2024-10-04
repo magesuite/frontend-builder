@@ -1,9 +1,8 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const jsonImporter = require('node-sass-json-importer');
 const merge = require('webpack-merge');
-
+const sass = require('sass');
 const SkipUnchangedPlugin = require('../skipUnchangedPlugin');
 
 const environment = require('../environment');
@@ -75,13 +74,13 @@ const settings = {
                             {
                                 loader: 'sass-loader',
                                 options: {
+                                    implementation: sass,
                                     sassOptions: {
                                         includePaths: [
                                             paths.src,
                                             'node_modules',
                                             ...Object.values(parentAliases),
                                         ],
-                                        importer: jsonImporter(),
                                     },
                                 },
                             },
