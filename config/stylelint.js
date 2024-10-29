@@ -11,7 +11,12 @@ module.exports = {
         'scss/operator-no-unspaced': true,
         'scss/dollar-variable-no-missing-interpolation': true,
         'scss/dollar-variable-colon-space-after': 'always-single-line',
-        'property-no-unknown': [true, { ignoreProperties: ['size-adjust'] }],
+        'property-no-unknown': [true, {
+            ignoreProperties: ['size-adjust', 'print-color-adjust']
+        }],
+        'unit-no-unknown': [true, {
+            ignoreUnits: ['dvh']
+        }]
     },
     ignoreFiles: ['src/etc/**/*', 'src/**/vendors/**/*', 'src/**/vendor/**/*'],
 };
