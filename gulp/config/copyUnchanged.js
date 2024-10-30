@@ -8,7 +8,7 @@ const paths = require('../paths');
 module.exports = {
     watch: [
         // Fonts.
-        path.join(paths.src, '**/*.{ttf,woff,woff2,eot}'),
+        path.join(paths.src, '**/*.{ttf,woff,woff2,eot,otf}'),
         // JSON except data for templates.
         path.join(paths.src, '**/*.json'),
         // PHP files
@@ -27,7 +27,7 @@ module.exports = {
 
     src: [
         // Fonts.
-        path.join(paths.src, '**/*.{ttf,woff,woff2,eot}'),
+        path.join(paths.src, '**/*.{ttf,woff,woff2,eot,otf}'),
         // JSON.
         path.join(paths.src, '**/*.json'),
         // PHP files

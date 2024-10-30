@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [4.0.0](https://gitlab.creativestyle.pl/m2c/magesuite-frontend-builder/compare/3.1.0...4.0.0)
+
+> 30 October 2024
+- Changed scss compilator from node-sass to sass to make package usable with latest node
+
 #### [3.1.0](https://gitlab.creativestyle.pl/m2c/magesuite-frontend-builder/compare/3.0.0...3.1.0)
 
 > 10 October 2022
