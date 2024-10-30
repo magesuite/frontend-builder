@@ -6,6 +6,8 @@ All notable changes to this project will be documented in this file. Dates are d
 
 > 30 October 2024
 - Changed scss compilator from node-sass to sass to make package usable with latest node
+- align package.json versions with yarn.lock
+- add otf font support
 
 #### [3.1.0](https://gitlab.creativestyle.pl/m2c/magesuite-frontend-builder/compare/3.0.0...3.1.0)
 
