@@ -23,6 +23,8 @@ module.exports = {
         path.join(paths.src, '**/*.{less,css}'),
         // Video media files
         path.join(paths.src, '**/*.{webm,mp4,ogg}'),
+        // Patch files
+        path.join(paths.src, '**/*.patch'),
     ],
 
     src: [
@@ -42,6 +44,8 @@ module.exports = {
         path.join(paths.src, '**/*.{less,css}'),
         // Video media files
         path.join(paths.src, '**/*.{webm,mp4,ogg}'),
+        // Patch files
+        path.join(paths.src, '**/*.patch'),
     ],
     dest: paths.dist,
-};
+}; 
