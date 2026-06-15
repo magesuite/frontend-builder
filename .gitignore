@@ -14,6 +14,9 @@ node_modules/
 ehthumbs.db
 Thumbs.db
 
+# npm artefacts (project uses yarn)
+package-lock.json
+
 # Exclude misc.
 src/__*/
 .htaccess
@@ -22,3 +25,4 @@ _reports
 src/utilities/_sprites.scss
 files-assets/
 .vscode
+memory/

@@ -1,12 +1,13 @@
 // @ts-check
 
-const path = require('path');
-const paths = require('../paths');
+import path from 'path';
+
+import paths from '../paths.js';
 
 /**
  * Settings for SVG sprites.
  */
-module.exports = {
+export default {
     watch: [path.join(paths.src, 'sprites/svg/*.svg')],
     src: path.join(paths.src, 'sprites/svg/*.svg'),
     dest: path.join(paths.dist, 'web/images/'),

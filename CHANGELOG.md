@@ -2,6 +2,103 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [5.0.0](https://gitlab.creativestyle.pl/m2c/magesuite-frontend-builder/-/compare/4.0.0...5.0.0)
+
+> 30 May 2026
+
+**ESM conversion**
+- Convert entire builder from CommonJS to native ES modules (`"type": "module"` in `package.json`)
+- Remove all `require()` / `module.exports` — all files now use `import` / `export default`
+- Eliminate dynamic `import()` workarounds for ESM-only packages (`del`, `gulp-imagemin`, `imagemin-*`) — these are now static top-level imports
+- Modernise `MagesuiteRegistry` from ES5 prototypal inheritance (`util.inherits`) to an ES6 `class extends DefaultRegistry`
+- Use `createRequire(import.meta.url)` in `gulp/config/buildWebpack.js` to synchronously load CJS `webpack.config.js` overrides from child themes — theme webpack configs do not need to change
+- Use `.parseSync()` instead of `.argv` for yargs to avoid the `Promise`-return ambiguity in newer yargs versions
+
+**Theme migration required**
+- Rename theme `gulpfile.js` → `gulpfile.mjs` and update to ESM imports:
+  ```js
+  import gulp from 'gulp';
+  import registry from '@creativestyle/magesuite-frontend-builder';
+  gulp.registry(registry);
+  ```
+- Add `src/declarations.d.ts` — silences TypeScript "Cannot find module" errors for SCSS imports (`declare module '*.scss'`) and Magento RequireJS modules (`declare module 'mage/*'`), which ship no `.d.ts` files
+
+**Interactive menu**
+- Add `magesuite-menu` binary (`menu.js`) — `@clack/prompts`-powered interactive command launcher exposing build, lint, and utility tasks grouped with per-item descriptions shown on hover
+- Themes opt in by adding `"menu": "magesuite-menu"` to their `package.json` scripts; the binary is registered automatically by `yarn install` via the `bin` field
+- Uses a custom `SelectPrompt` built on `@clack/core` to suppress clack's default strikethrough rendering of the highlighted item on Ctrl+C — cancellation exits cleanly with no visual noise
+- Includes a `pre-commit run --all-files` option; requires the `pre-commit` CLI to be installed separately (`pip install pre-commit` or `brew install pre-commit`); missing binary produces a clear "Command not found" error rather than a crash
+
+**Linting**
+- Replace TSLint with ESLint + @typescript-eslint for TypeScript linting — config in `.eslintrc.js` (now `eslint.config.js` flat config)
+- Upgrade ESLint v8→v10, migrate to flat config format (`eslint.config.js`)
+- Upgrade stylelint from v13 to v17, remove deprecated `stylelint-config-prettier`
+- Add `eslint` and `stylelint` gulp tasks runnable via `yarn lint:js` and `yarn lint:css` — pass `--fix` flag to auto-fix violations
+- Enable `no-console` (`allow: ['warn', 'error']`) — flag `console.log` in committed code; `console.warn` and `console.error` are allowed for intentional runtime output
+
+**@import compatibility — suppressions for un-migrated themes**
+
+These entries allow themes that have not yet run `mgs-migrate-sass` to build and lint cleanly. They must be rolled back (via the sass migration skill) once all themes are migrated to `@use`/`@forward`.
+
+- `gulp/config/buildWebpack.js` — added to `silenceDeprecations`: `'import'`, `'global-builtin'`, `'slash-div'`, `'color-functions'`, `'if-function'`
+- `config/stylelint.js` — disabled: `scss/no-global-function-names`, `scss/load-partial-extension`, `scss/load-no-partial-leading-underscore`, `no-invalid-position-at-import-rule`
+
+**Pre-existing code quality — suppressions for theme-creativeshop compatibility**
+
+These entries cover violations that exist in theme files regardless of SCSS migration status. They were suppressed to avoid altering theme-creativeshop source files. Restoring them requires deliberate theme-side fixes — they do not roll back automatically with the sass migration.
+
+- `config/stylelint.js` — disabled: `property-no-deprecated`, `declaration-property-value-keyword-no-deprecated`, `scss/comment-no-empty`, `scss/no-duplicate-mixins`, `declaration-block-no-duplicate-properties`
+- `eslint.config.js` — suppression block added (`no-var`, `no-useless-assignment`, `no-useless-escape`, `prefer-rest-params`, `no-constant-binary-expression`, `valid-typeof`)
+- `eslint.config.js` — set to `off`: `@typescript-eslint/no-unused-vars`, `@typescript-eslint/no-unused-expressions`, `@typescript-eslint/no-empty-function`, `prefer-arrow-callback`, `object-shorthand`
+
+**BrowserSync**
+- Upgrade browser-sync from v2 to v3
+- Switch browserSync proxy target to HTTPS and add local SSL certificate support via mkcert (more info in LOCAL_SSL_CERT.md)
+- Automate SSL certificate generation on `yarn serve` — detects current machine IP and generates certificates for localhost and the local network IP via mkcert, enabling access from any device on the same network
+- Make URL rewrite target dynamic based on request host, fixing CORS errors and broken navigation when accessing browser-sync via external IP address
+- Rewrite Referer and Origin request headers to upstream domain to fix AJAX layered navigation losing page path and previously selected filters when selecting a second filter via browser-sync
+- Add URL rewrite middleware to fix CORS errors caused by Magento encoding base URLs in three different forms (plain, backslash-escaped, Unicode-escaped) in JS/JSON responses
+- Rewrite Magento's `cookieDomain` option to empty string to prevent browser from rejecting cookies set with `domain=magesuite.me` when served via browser-sync, which was causing the offcanvas minicart to lose its contents on every page reload
+- Strip `Content-Security-Policy` header to fix checkout inline scripts being blocked after URL rewriting invalidates their CSP hashes
+- Fix link masking POST redirects bypassing browser-sync by intercepting and rewriting `Location` headers on 302 responses
+- Reverse-rewrite `<input name="url">` redirect destination values (including protocol-relative `//host` form) so Magento validates them against the store base URL
+- Rewrite POST request bodies before forwarding to upstream, replacing browser-sync host URLs back to the origin — fixes link masking for dynamically created forms (PostHelper `data-post` JSON rendered via Knockout)
+- Handle double JSON-encoded URLs (`https:\/\/`) in `x-magento-init` scripts, where PHP's `json_encode` is applied twice — fixes link masking for Elasticsuite navigation filter items bound via `data-bind`
+
+**Build infrastructure**
+- Replace SSH cache-cleaning with docker exec to support Docker-based local development setups
+- Fix `collectViewXml` task to use fast-xml-parser v5 class-based API — the legacy `parser.parse()` was silently failing, producing an empty `$view-xml` map and breaking breakpoint resolution at build time
+- Upgrade husky v4→v9 and lint-staged v10→v16 — migrate from `.huskyrc.js` to `.husky/pre-commit` shell script
+- Fix binary file corruption in `copyUnchanged` and `copyImages` tasks — Gulp 5 / vinyl-fs v4 applies UTF-8 decoding to `gulp.src()` by default, silently corrupting woff2 and PNG/JPG files (invalid byte sequences replaced with U+FFFD, causing `Failed to decode downloaded font` errors and broken images). Fixed by passing `{ encoding: false }` to `gulp.src()` and `gulp.dest()` in all binary copy tasks.
+
+**Webpack**
+- Upgrade webpack v4→v5 — persistent filesystem cache enabled by default (`node_modules/.cache/webpack`), significantly faster incremental builds
+- Replace `optimize-css-assets-webpack-plugin` with `css-minimizer-webpack-plugin` (webpack v5 compatible CSS minifier)
+- Replace `cache-loader` with webpack v5 built-in filesystem cache — no config needed, drop `cache-loader` from your build rules
+- Upgrade `webpack-merge` v4→v6, `ts-loader` v7→v9, `sass-loader` v10→v16, `css-loader` v5→v7, `mini-css-extract-plugin` v1→v2, `postcss-loader` v3→v8
+- Upgrade `autoprefixer` v9→v10, `postcss-flexbugs-fixes` v4→v5 — both now require PostCSS 8 (provided by `postcss-loader` v8)
+- Add `gulp cleanWebpackCache` task to wipe `node_modules/.cache/webpack` when a stale cache causes unexpected build output
+- Add `--verbose` flag (`yarn build:verbose`) — shows full asset list with sizes and all performance warnings; default `yarn build` stays quiet with a single summary line for any oversized assets
+- Suppress webpack performance hints during `yarn serve` — asset sizes are irrelevant in development mode (unminified, source maps included)
+
+**Image optimization**
+- Upgrade gulp-imagemin v7→v9, imagemin-mozjpeg v8→v10, imagemin-pngquant v8→v10 — all ESM-only in their latest versions; loaded via dynamic `import()` in the production build path so watch/serve mode remains unaffected
+- Replace bundled svgo v1 (shipped inside gulp-imagemin v7) with imagemin-svgo v10 (svgo v3) — full `preset-default` optimization with `removeViewBox: false`
+- Drop imagemin-gifsicle — binary installer incompatible with Node 18+, package unmaintained since 2019
+
+**Browser targets**
+- Add `.browserslistrc` — drops IE 11, targets last 2 versions of evergreen browsers, Firefox ESR, and browsers with >0.5% usage. This is consumed by autoprefixer (PostCSS) for CSS vendor prefixing and used to confirm that `tsconfig.json` `target: "ES2022"` is safe
+- Pin `caniuse-lite` to `1.0.30001781` in `resolutions` — prevents autoprefixer and webpack from printing "browsers data is N months old" warnings caused by transitive packages declaring `caniuse-lite@^1.0.0`
+
+**Build infrastructure**
+- Add `srcExists.js` utility — guards `gulp.src()` calls in all copy tasks; returns `false` if none of the source base directories exist, preventing ENOENT crashes when a child theme omits optional source directories (e.g. `src/web/js`, `src/doc`, `src/web/images`)
+
+**Dependency upgrades**
+- del v5→v8, glob v7→v11, gulp v4→v5, fancy-log added as explicit dependency (was a transitive ghost in gulp v4)
+- chalk v4→v5 (ESM-only in v5) — replaced `require('chalk')` with `import chalk from 'chalk'`
+- lodash.merge replaced with lodash-es `merge` — `lodash.merge` is CJS-only; `lodash-es` provides the same API as a native ESM package
+- sass 1.32→1.98, @types/jquery 3→4, fast-xml-parser 3→5, node-ssh 8→13, plugin-error 1→2, postcss-reporter 6→7, yargs 15→18, prettier 2→3, eslint-plugin-prettier 3→5, eslint-config-prettier 8→10, stylelint-prettier 3→5, gulp-sourcemaps 2→3, postcss-scss 2→4, gulp-changed 4→5
+
 #### [4.0.0](https://gitlab.creativestyle.pl/m2c/magesuite-frontend-builder/compare/3.1.0...4.0.0)
 
 > 30 October 2024
