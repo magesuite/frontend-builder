@@ -1,9 +1,15 @@
-const log = require('fancy-log');
-const del = require('del');
-const settings = require('../config/clean');
+import log from 'fancy-log';
+import { deleteAsync } from 'del';
 
-module.exports = function clean() {
-    return del(settings.src, {
+import settings from '../config/clean.js';
+
+/**
+ * Task for deleting the dist directory before a fresh build.
+ * Paths to clean are defined in gulp/config/clean.js.
+ * @return {Promise} Promise resolving when all configured paths have been deleted.
+ */
+export default async function clean() {
+    return deleteAsync(settings.src, {
         force: true,
-    }).catch(error => log.error(error.message));
-};
+    }).catch((error) => log.error(error.message));
+}

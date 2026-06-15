@@ -1,15 +1,23 @@
-const gulp = require('gulp');
-const log = require('fancy-log');
-const nodeSSH = require('node-ssh');
-const { exec } = require('child_process');
+import gulp from 'gulp';
+import log from 'fancy-log';
+import chalk from 'chalk';
+import { NodeSSH } from 'node-ssh';
+import { exec } from 'child_process';
 
-const environment = require('../environment');
-const settings = require('../config/cleanCache');
+import environment from '../environment.js';
+import settings from '../config/cleanCache.js';
 
 let firstRun = true;
-const ssh = new nodeSSH();
+const ssh = new NodeSSH();
 
-module.exports = function cleanCache(done) {
+/**
+ * Task for clearing Magento's application cache after a build.
+ * Supports three connection types: ssh, local, and docker.
+ * Only runs in development mode — skipped silently in production/CI.
+ * Connection settings are defined in gulp/config/cleanCache.js.
+ * @param {Function} done Gulp callback to signal task completion.
+ */
+export default function cleanCache(done) {
     if (!environment.development) {
         log.info(
             'Skipping clearing the cache since we are not in development mode.'
@@ -39,12 +47,12 @@ module.exports = function cleanCache(done) {
                     cwd: connection.path,
                 })
             )
-            .then(result => {
+            .then((result) => {
                 ssh.dispose();
                 log.info(result.stdout.replace(/\n/g, ' '));
                 done();
             })
-            .catch(error => {
+            .catch((error) => {
                 ssh.dispose();
                 log.error(
                     `Could not SSH to ${connection.host} to clean the cache.`
@@ -74,7 +82,26 @@ module.exports = function cleanCache(done) {
         return;
     }
 
+    if (connection.type === 'docker') {
+        exec(
+            `docker exec ${connection.container} bash -c "cd ${connection.path} && ${command}"`,
+            (error, stdout) => {
+                if (error) {
+                    log.warn(
+                        chalk.bold.yellow(
+                            `⚠  Cache clean skipped — expected path ${connection.path} not found inside container ${connection.container}. Is the correct Docker project running?`
+                        )
+                    );
+                } else {
+                    log.info(stdout.replace(/\n/g, ' '));
+                }
+                done();
+            }
+        );
+        return;
+    }
+
     throw new TypeError(
         `Unknown \`config.cleanCache.magentoConnection.type\` value: ${connection.type}`
     );
-};
+}

@@ -1,11 +1,11 @@
-const path = require('path');
-const parser = require('fast-xml-parser');
-const merge = require('lodash.merge');
-const fs = require('fs-extra');
-const { stringify } = require('javascript-stringify');
+import path from 'path';
+import { XMLParser } from 'fast-xml-parser';
+import { merge } from 'lodash-es';
+import fs from 'fs-extra';
+import { stringify } from 'javascript-stringify';
 
-const settings = require('../config/collectViewXml');
-const paths = require('../paths');
+import settings from '../config/collectViewXml.js';
+import paths from '../paths.js';
 
 const transformImage = (imageArray) => {
     imageArray = Array.isArray(imageArray) ? imageArray : [imageArray];
@@ -45,12 +45,12 @@ const parseViewXml = (viewXmlPath) => {
 
     try {
         const xml = fs.readFileSync(viewXmlPath, 'utf8');
-        json = parser.parse(xml, {
+        json = new XMLParser({
             ignoreAttributes: false,
             attributeNamePrefix: '',
             textNodeName: 'text',
-        }).view;
-    } catch (error) {}
+        }).parse(xml).view;
+    } catch {}
 
     delete json.exclude;
 
@@ -66,13 +66,16 @@ const parseViewXml = (viewXmlPath) => {
         // When there are images defined for only one module.
         if (json.media.images.image) {
             json.media.images.image = transformImage(json.media.images.image);
-        // When there are images defined for multiple modules.
+            // When there are images defined for multiple modules.
         } else if (Array.isArray(json.media.images)) {
             json.media.images = json.media.images.reduce(
                 (images, module) => {
                     images.image = Object.assign(
-                        images.image, 
-                        images.image[module.image.id] = transformImage(module.image));
+                        images.image,
+                        (images.image[module.image.id] = transformImage(
+                            module.image
+                        ))
+                    );
                     return images;
                 },
                 { image: {} }
@@ -124,7 +127,16 @@ const saveToScss = (viewXml) => {
     return fs.outputFile(path.join(paths.src, 'etc/view.scss'), scss);
 };
 
-module.exports = function collectViewXml(cb) {
+/**
+ * Task for parsing theme.xml and all parent theme view.xml files, merging them
+ * into a single resolved config, and emitting it in three formats:
+ *   - JSON  → src/etc/view.json  (consumed by JS at runtime)
+ *   - TS    → src/etc/view.ts    (typed constants for TypeScript components)
+ *   - SCSS  → src/etc/view.scss  ($view-xml map for breakpoints and image sizes)
+ * Must run before buildWebpack as the generated SCSS is imported by components.
+ * @param {Function} cb Gulp callback to signal task completion.
+ */
+export default function collectViewXml(cb) {
     const viewXml = settings.src.reduce((json, viewXmlPath) => {
         return merge(json, parseViewXml(viewXmlPath));
     }, {});
@@ -133,5 +145,5 @@ module.exports = function collectViewXml(cb) {
         .then(saveToTypeScript(viewXml))
         .then(saveToScss(viewXml))
         .then(cb)
-        .catch((err) => {});
-};
+        .catch(() => {});
+}

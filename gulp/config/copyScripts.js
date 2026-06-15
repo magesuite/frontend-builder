@@ -1,12 +1,12 @@
 // @ts-check
-const path = require('path');
+import path from 'path';
 
-const paths = require('../paths');
+import paths from '../paths.js';
 
 /**
  *  Configuration for scripts task.
  */
-module.exports = {
+export default {
     watch: [path.join(paths.src, 'web/js/**/*.js')],
     src: [path.join(paths.src, 'web/js/**/*.js')],
     dest: path.join(paths.dist, 'web/js'),

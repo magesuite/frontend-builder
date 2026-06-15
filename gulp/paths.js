@@ -1,12 +1,15 @@
-const path = require('path');
+import path from 'path';
+import { readFileSync } from 'fs';
 
 // Get template info from composer.json file in current working directory.
-const templateInfo = require(path.resolve('composer.json'));
+const templateInfo = JSON.parse(
+    readFileSync(path.resolve('composer.json'), 'utf8')
+);
 
 /**
  * Default paths for a project.
  */
-module.exports = {
+export default {
     /**
      * Path to sources directory relative to CWD.
      * @type {string}

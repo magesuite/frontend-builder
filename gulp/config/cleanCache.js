@@ -1,11 +1,13 @@
-const path = require('path');
+import path from 'path';
 
-const paths = require('../paths');
+import paths from '../paths.js';
 
 /**
- * Returns configuration for copying assets that don't need any processing.
+ * Configuration for the Magento cache-clearing task.
+ * Defines which cache types to flush and the connection method used to run
+ * bin/magento cache:clean — supports ssh, local, and docker connection types.
  */
-module.exports = {
+export default {
     cacheTypes: ['layout', 'block_html', 'full_page'],
 
     /**
@@ -18,13 +20,16 @@ module.exports = {
      * } | {
      *   type: 'local',
      *   path: string
+     * } | {
+     *   type: 'docker',
+     *   container: string,
+     *   path: string
      * }
      */
     magentoConnection: {
-        type: 'ssh',
-        host: 'magesuite.me',
-        username: 'magento',
-        path: '/var/www/magento/current',
+        type: 'docker',
+        container: 'docker-php-1',
+        path: '/var/www/projects/' + path.basename(path.resolve('../../../')),
     },
 
     watch: [

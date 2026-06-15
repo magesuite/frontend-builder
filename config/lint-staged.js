@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     'src/**/*.{css,scss}': ['stylelint --fix'],
-    'src/**/*.{ts,js}': ['prettier --write', 'tslint --fix'],
+    'src/**/*.{ts,js}': ['prettier --write', 'eslint --fix'],
 };

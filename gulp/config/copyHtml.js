@@ -1,10 +1,11 @@
-const path = require('path');
-const paths = require('../paths');
+import path from 'path';
+
+import paths from '../paths.js';
 
 /**
  * Configuration for copying templates files.
  */
-module.exports = {
+export default {
     watch: [path.join(paths.src, '**/*.html')],
     src: [path.join(paths.src, '**/*.html')],
     dest: paths.dist,

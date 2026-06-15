@@ -1,4 +1,6 @@
-const argv = require('yargs').argv;
+import yargs from 'yargs/yargs';
+
+const argv = yargs(process.argv.slice(2)).parseSync();
 
 /**
  * Module responsible for defining custom environments for project building.
@@ -14,6 +16,8 @@ const environment = {
     ci: false,
     // Special watch environment, disables breaking build on errors.
     watch: Boolean(argv.w) || Boolean(argv.watch),
+    // Verbose mode, enables full webpack stats and performance hints.
+    verbose: Boolean(argv.verbose),
 };
 
 // Check "--env" task param.
@@ -31,4 +35,4 @@ switch (argv.env) {
         environment.development = true;
 }
 
-module.exports = environment;
+export default environment;

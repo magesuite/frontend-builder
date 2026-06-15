@@ -1,11 +1,11 @@
-const path = require('path');
+import path from 'path';
 
-const paths = require('../paths');
+import paths from '../paths.js';
 
 /**
  * Returns configuration for copying assets that don't need any processing.
  */
-module.exports = {
+export default {
     watch: [
         // Fonts.
         path.join(paths.src, '**/*.{ttf,woff,woff2,eot,otf}'),
@@ -48,4 +48,4 @@ module.exports = {
         path.join(paths.src, '**/*.patch'),
     ],
     dest: paths.dist,
-}; 
+};
