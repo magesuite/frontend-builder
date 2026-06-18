@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
-#### [5.1.0](https://gitlab.creativestyle.pl/m2c/magesuite-frontend-builder/-/compare/5.0.0...5.1.0)
+#### [5.0.1](https://gitlab.creativestyle.pl/m2c/magesuite-frontend-builder/-/compare/5.0.0...5.0.1)
 
 > 16 June 2026
 

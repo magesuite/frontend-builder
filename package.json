@@ -1,6 +1,6 @@
 {
   "name": "@creativestyle/magesuite-frontend-builder",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "type": "module",
   "main": "registry.js",
   "bin": {
