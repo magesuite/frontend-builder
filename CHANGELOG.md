@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [5.1.0](https://gitlab.creativestyle.pl/m2c/magesuite-frontend-builder/-/compare/5.0.0...5.1.0)
+
+> 16 June 2026
+
+**Formatting**
+- Set Prettier `printWidth` to 100 (from the default 80) so multi-token declarations and long values stay on a single line more often (better readability). Applies to all formatted file types (css, scss, ts, js).
+
 #### [5.0.0](https://gitlab.creativestyle.pl/m2c/magesuite-frontend-builder/-/compare/4.0.0...5.0.0)
 
 > 30 May 2026
