@@ -1,9 +1,10 @@
 // @ts-check
 const path = require('path');
-const imagemin = require('gulp-imagemin');
-const imageminMozjpeg = require('imagemin-mozjpeg');
-const imageminPngquant = require('imagemin-pngquant');
+const imageminGifsicle = require('imagemin-gifsicle');
+const imageminSvgo = require('imagemin-svgo');
 
+const imageminPngquant = require('../imageminPngquant');
+const imageminSharpJpeg = require('../imageminSharpJpeg');
 const paths = require('../paths');
 
 /**
@@ -20,14 +21,17 @@ module.exports = {
     ],
     dest: paths.dist,
     /**
-     * Configuration for imagemin image minifier.
-     * @see https://github.com/sindresorhus/gulp-imagemin#imageminoptions
+     * Imagemin plugins applied to images in production builds.
      */
     imagemin: [
         imageminPngquant(),
-        imageminMozjpeg({ quality: 90, progressive: true }),
-        imagemin.gifsicle({ interlaced: true }),
-        imagemin.svgo({
+        imageminSharpJpeg({
+            quality: 90,
+            progressive: true,
+            chromaSubsampling: '4:4:4',
+        }),
+        imageminGifsicle({ interlaced: true }),
+        imageminSvgo({
             plugins: [{ removeViewBox: false }],
         }),
     ],
