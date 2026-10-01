@@ -1,9 +1,9 @@
 const gulp = require('gulp');
 const changed = require('gulp-changed');
 const gulpif = require('gulp-if');
-const imagemin = require('gulp-imagemin');
 
 const environment = require('../environment');
+const imageminStream = require('../imageminStream');
 const settings = require('../config/copyImages');
 
 let firstRun = true;
@@ -18,6 +18,6 @@ module.exports = function copyImages() {
     return gulp
         .src(settings.src)
         .pipe(changed(settings.dest))
-        .pipe(gulpif(environment.production, imagemin(settings.imagemin)))
+        .pipe(gulpif(environment.production, imageminStream(settings.imagemin)))
         .pipe(gulp.dest(settings.dest));
 };

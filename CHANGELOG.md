@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [4.0.3](https://gitlab.creativestyle.pl/m2c/magesuite-frontend-builder/compare/4.0.2...4.0.3)
+
+> 29 September 2026
+- Compress JPEGs with sharp instead of `imagemin-mozjpeg`. The mozjpeg package only ships an x86_64 `cjpeg` for macOS, so `yarn install` and production builds failed on Apple Silicon without Rosetta, which macOS 28 removes. sharp uses the same mozjpeg encoder and the same `quality` / `progressive` settings.
+- Update `imagemin-pngquant` to 10. The pngquant used before only shipped an x86_64 binary for macOS. Version 10 installs pngquant with an Apple Silicon build.
+- Replace `gulp-imagemin` with a small builder stream around `imagemin`. `gulp-imagemin` installs mozjpeg and optipng as fallback plugins the builder never uses, and their install scripts fail on Apple Silicon without Rosetta. The build log keeps the same `Minified N images (saved ...)` summary.
+- Raise the minimum Node.js version to 20.9.0, required by sharp.
+
 #### [4.0.0](https://gitlab.creativestyle.pl/m2c/magesuite-frontend-builder/compare/3.1.0...4.0.0)
 
 > 30 October 2024
