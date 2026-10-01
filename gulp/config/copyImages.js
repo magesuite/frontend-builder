@@ -18,9 +18,8 @@ export default {
     dest: paths.dist,
     /**
      * Options passed to imagemin plugins in production builds.
-     * @see https://github.com/sindresorhus/gulp-imagemin#imageminoptions
      */
-    mozjpeg: { quality: 90, progressive: true },
+    mozjpeg: { quality: 90, progressive: true, chromaSubsampling: '4:4:4' },
     pngquant: {},
     svgo: {
         plugins: [

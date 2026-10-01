@@ -1,6 +1,6 @@
 {
   "name": "@creativestyle/magesuite-frontend-builder",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "type": "module",
   "main": "registry.js",
   "bin": {
@@ -10,7 +10,7 @@
   "author": "creativestyle",
   "license": "MIT",
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.10.0"
   },
   "scripts": {
     "menu": "node menu.js",
@@ -44,9 +44,8 @@
     "glob": "^11.0.0",
     "gulp": "^5.0.0",
     "gulp-changed": "^5.0.4",
-    "gulp-imagemin": "^9.0.0",
     "husky": "^9.1.7",
-    "imagemin-mozjpeg": "^10.0.0",
+    "imagemin": "^9.0.0",
     "imagemin-pngquant": "^10.0.0",
     "imagemin-svgo": "^10.0.0",
     "javascript-stringify": "^2.1.0",
@@ -59,8 +58,10 @@
     "postcss-loader": "^8.0.0",
     "postcss-scss": "^4.0.9",
     "prettier": "^3.8.1",
+    "pretty-bytes": "^6.1.1",
     "sass": "^1.98.0",
     "sass-loader": "^16.0.0",
+    "sharp": "^0.35.5",
     "stylelint": "^17.5.0",
     "stylelint-config-recommended": "^18.0.0",
     "stylelint-config-recommended-scss": "^17.0.0",
