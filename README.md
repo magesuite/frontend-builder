@@ -60,6 +60,8 @@ magesuite-frontend-builder/
     ├── collectParents.js       # Walks theme.xml <parent> chain → ordered list of parent paths
     ├── parentAliases.js        # Builds webpack alias map (e.g. Creativeshop → parent src/)
     ├── skipUnchangedPlugin.js  # Webpack plugin — skips emitting assets identical to dist
+    ├── imageminStream.js       # Gulp stream that runs images through imagemin plugins
+    ├── imageminSharpJpeg.js    # Imagemin plugin — JPEG compression with sharp's mozjpeg encoder
     ├── srcExists.js            # Guards gulp.src() calls — prevents ENOENT when optional dirs are absent
     │
     ├── config/                 # Per-task configuration
@@ -329,8 +331,8 @@ Run `yarn install --force` after adding the field to apply the resolution.
 | Package | Purpose |
 |---|---|
 | `gulp-changed` | Skips copying files that haven't changed since the last build |
-| `gulp-imagemin` v9 | Image optimisation pipeline (production only) |
-| `imagemin-mozjpeg` v10 | Lossy JPEG compression via mozjpeg |
+| `imagemin` v9 | Image optimisation core, run through the builder's own `gulp/imageminStream.js` (production only) |
+| `sharp` v0.35 | Lossy JPEG compression via the mozjpeg encoder bundled in sharp. Ships native builds for every platform, so no Rosetta is needed on Apple Silicon |
 | `imagemin-pngquant` v10 | Lossy PNG compression via pngquant |
 | `imagemin-svgo` v10 | SVG optimisation via svgo v3 |
 | `del` v8 | Deletes files and directories |
