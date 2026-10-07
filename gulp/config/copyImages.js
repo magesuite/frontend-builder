@@ -28,6 +28,8 @@ export default {
                 params: {
                     overrides: {
                         removeViewBox: false,
+                        // Usage pruning drops @keyframes referenced only from style attributes, which freezes the theme-cs spinner
+                        minifyStyles: { usage: false },
                     },
                 },
             },

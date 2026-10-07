@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [5.0.3](https://gitlab.creativestyle.pl/m2c/magesuite-frontend-builder/-/compare/5.0.2...5.0.3)
+
+> 7 October 2026
+
+**Images**
+- Keep `@keyframes` in optimized SVGs. svgo's `minifyStyles` removed CSS it considered unused, including `@keyframes` referenced only from a `style` attribute. This froze the CSS spinner theme-creativeshop ships since v22.0.8. Styles are still minified, only the removal of unused rules is turned off.
+
 #### [5.0.2](https://gitlab.creativestyle.pl/m2c/magesuite-frontend-builder/-/compare/5.0.1...5.0.2)
 
 > 28 September 2026
