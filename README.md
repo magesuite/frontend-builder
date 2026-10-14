@@ -62,6 +62,7 @@ magesuite-frontend-builder/
     ├── skipUnchangedPlugin.js  # Webpack plugin — skips emitting assets identical to dist
     ├── imageminStream.js       # Gulp stream that runs images through imagemin plugins
     ├── imageminSharpJpeg.js    # Imagemin plugin — JPEG compression with sharp's mozjpeg encoder
+    ├── imageminSharpPng.js     # Imagemin plugin — PNG palette compression with sharp's libimagequant
     ├── srcExists.js            # Guards gulp.src() calls — prevents ENOENT when optional dirs are absent
     │
     ├── config/                 # Per-task configuration
@@ -112,7 +113,7 @@ Resolution order for any given file:
 3. Base theme `src/` (theme-creativeshop)
 4. `node_modules/`
 
-Webpack aliases and SCSS `includePaths` are populated automatically from this chain — no manual path configuration needed in child themes.
+Webpack aliases and module resolution paths are populated automatically from this chain — no manual path configuration needed in child themes.
 
 ### Parent theme setup
 
@@ -311,14 +312,14 @@ Run `yarn install --force` after adding the field to apply the resolution.
 | `typescript` | TypeScript compiler (used by ts-loader) |
 | `@types/jquery` | Type definitions for jQuery (available globally in Magento) |
 | `@types/requirejs` | Type definitions for RequireJS (used in Magento module overrides) |
-| `glob` v11 | Resolves entry point file patterns across the theme inheritance chain |
+| `glob` v13 | Resolves entry point file patterns across the theme inheritance chain |
 
 ### CSS processing
 
 | Package | Purpose |
 |---|---|
 | `sass` | Dart Sass compiler — compiles SCSS to CSS |
-| `sass-loader` v16 | Webpack loader that invokes Dart Sass |
+| `sass-loader` v17 | Webpack loader that invokes Dart Sass |
 | `css-loader` v7 | Resolves CSS `@import` and `url()` inside webpack |
 | `mini-css-extract-plugin` | Extracts compiled CSS into separate `.css` files per entry point |
 | `css-minimizer-webpack-plugin` | Minifies extracted CSS in production builds |
@@ -332,9 +333,8 @@ Run `yarn install --force` after adding the field to apply the resolution.
 |---|---|
 | `gulp-changed` | Skips copying files that haven't changed since the last build |
 | `imagemin` v9 | Image optimisation core, run through the builder's own `gulp/imageminStream.js` (production only) |
-| `sharp` v0.35 | Lossy JPEG compression via the mozjpeg encoder bundled in sharp. Ships native builds for every platform, so no Rosetta is needed on Apple Silicon |
-| `imagemin-pngquant` v10 | Lossy PNG compression via pngquant |
-| `imagemin-svgo` v10 | SVG optimisation via svgo v3 |
+| `sharp` v0.35 | Lossy JPEG compression via the mozjpeg encoder and lossy PNG compression via the libimagequant palette quantiser, both bundled in sharp. Ships native builds for every platform, so nothing is downloaded during `yarn install` and no Rosetta is needed on Apple Silicon |
+| `imagemin-svgo` v10 | SVG optimisation via svgo v2 |
 | `del` v8 | Deletes files and directories |
 
 ### Linting and formatting
@@ -365,7 +365,7 @@ Run `yarn install --force` after adding the field to apply the resolution.
 | Package | Purpose |
 |---|---|
 | `husky` v9 | Manages git hooks — runs lint-staged on pre-commit |
-| `lint-staged` v16 | Runs linters only on staged files |
+| `lint-staged` v17 | Runs linters only on staged files |
 
 ---
 
@@ -390,9 +390,8 @@ Run `yarn install --force` after adding the field to apply the resolution.
 
 | Suppression | Reason | Should devs adapt? |
 |---|---|---|
-| **Sass deprecations** (`legacy-js-api`, `import`, `global-builtin`, `slash-div`, `color-functions`, `if-function`) | `legacy-js-api`: sass-loader still uses the old Dart Sass callback-based JS API. The remaining five allow themes that have not yet migrated to `@use`/`@forward` to compile cleanly. | Remove the five `@import` entries once all themes are migrated via `mgs-migrate-sass`. Remove `legacy-js-api` once sass-loader ships modern async API support. |
+| **Sass deprecations** (`import`, `global-builtin`, `slash-div`, `color-functions`, `if-function`) | Allow themes that have not yet migrated to `@use`/`@forward` to compile cleanly. | Remove them once all themes are migrated via `mgs-migrate-sass`. |
 | **Webpack performance hints** in dev/watch mode | Asset sizes are meaningless before minification | No — hints are shown correctly in `yarn build` and fully in `yarn build:verbose` |
-| **SVG optimisation via svgo** for complex SVGs | svgo v3 crashes on `/* <![CDATA[ */` wrappers in inline `<style>` blocks | **Yes** — remove CDATA wrappers from custom SVGs |
 | **`imagemin-gifsicle`** dropped entirely | Binary installer incompatible with Node 18+; package unmaintained since 2019 | No — GIF assets are copied unoptimised |
 | **`@typescript-eslint/no-explicit-any`** off | Theme codebase has widespread `any` usage | **Yes** — gradually replace `any` with proper types in new code |
 

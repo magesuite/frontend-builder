@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-`@creativestyle/magesuite-frontend-builder` is the shared Gulp/Webpack build system consumed by all MageSuite child themes via `gulp.registry(registry)`. All actual build logic lives here — themes provide only a minimal `gulpfile.mjs` entry point. Current version: **5.0.0**.
+`@creativestyle/magesuite-frontend-builder` is the shared Gulp/Webpack build system consumed by all MageSuite child themes via `gulp.registry(registry)`. All actual build logic lives here — themes provide only a minimal `gulpfile.mjs` entry point.
 
 ## Commands
 
@@ -47,19 +47,13 @@ yarn gulp stylelint --fix     # lint and auto-fix SCSS
 
 ## Intentionally suppressed warnings
 
-### `silenceDeprecations: ['legacy-js-api']` — `gulp/config/buildWebpack.js`
+### Sass deprecations — `gulp/config/buildWebpack.js`
 
-`sass-loader` still uses the old Dart Sass callback-based JS API internally — not a theme code issue. **Remove `legacy-js-api` once sass-loader ships support for the modern async API** — track sass-loader releases.
-
-Other deprecations previously silenced (`import`, `if-function`, `global-builtin`) have been fully resolved in the theme codebase and removed.
+`silenceDeprecations` keeps `import`, `global-builtin`, `slash-div`, `color-functions` and `if-function` quiet, so themes not yet migrated to `@use`/`@forward` compile cleanly. Remove them once all themes are migrated.
 
 ### Webpack performance hints suppressed in dev/watch mode
 
 Asset sizes are meaningless before minification; hints would fire on every save during `yarn serve`. Hints are shown correctly in `yarn build` and fully in `yarn build:verbose`.
-
-### SVG optimisation skipped for complex SVGs
-
-svgo v3 crashes on `/* <![CDATA[ */` wrappers in inline `<style>` blocks. Remove CDATA wrappers from custom SVGs to enable optimisation.
 
 ## Interactive menu (`magesuite-menu`)
 
@@ -83,20 +77,11 @@ Commands are spawned via Node.js `child_process.spawn` without `shell: true` to 
 - **tsconfig `target: "ES2022"`** — matches `.browserslistrc` (no IE 11, last 2 versions of evergreen browsers). ES2022 is natively supported by all targeted browsers; no downcompilation needed.
 - **Pre-commit hook runs ESLint only** — `tsc` is deliberately excluded to keep commits fast. Type errors only surface via `yarn lint:js` or CI.
 
-## ESLint rules — enabled as warn
+## ESLint rules
 
-In addition to the rules kept off below, the following are **enabled as `warn`** — enforced best practices for all consuming themes:
-
-- **`object-shorthand`** — `{ method() {} }` / `{ key }` over `{ method: function() {} }` / `{ key: key }`
-- **`prefer-arrow-callback`** — arrow functions for callbacks unless `this` binding is required
-- **`@typescript-eslint/no-unused-expressions`** (`allowTernary: true`, `allowShortCircuit: true`) — no discarded expression results; ternaries (`condition ? doA() : doB()`) and short-circuit patterns (`condition && doSomething()`) as statements permitted; bare property reads are not
-- **`@typescript-eslint/no-empty-function`** — no accidentally empty function bodies
-- **`no-console`** (`allow: ['warn', 'error']`) — `console.log` flagged; `console.warn`/`console.error` allowed
-
-### ESLint rules kept off
-
-- **`@typescript-eslint/no-explicit-any`** — widespread `any` usage in the theme; gradually replace with proper types in new/modified code
-- **`@typescript-eslint/no-var-requires`** — not applicable to ESM builder; kept off for any theme files still using `require()` patterns
+- **`no-console`** warns on `console.log`. `console.warn` and `console.error` are allowed.
+- Turned off for existing theme code: `@typescript-eslint/no-explicit-any`, `no-this-alias`, `no-unused-expressions` and `no-unused-vars` in TS, and `no-var`, `no-useless-assignment`, `no-useless-escape`, `prefer-rest-params`, `no-constant-binary-expression` and `valid-typeof` in JS and TS.
+- Only list a rule as `off` when a preset turns it on. An `off` for a rule nothing enables has no effect.
 
 ## Theme integration
 

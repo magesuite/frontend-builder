@@ -20,7 +20,7 @@ export default {
      * Options passed to imagemin plugins in production builds.
      */
     mozjpeg: { quality: 90, progressive: true, chromaSubsampling: '4:4:4' },
-    pngquant: {},
+    png: { compressionLevel: 9 },
     svgo: {
         plugins: [
             {

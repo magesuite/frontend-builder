@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [5.1.0](https://gitlab.creativestyle.pl/m2c/magesuite-frontend-builder/-/compare/5.0.3...5.1.0)
+
+> 30 September 2026
+
+**Dependencies**
+- Refresh `yarn.lock` and update css-minimizer-webpack-plugin to 8, glob to 13 and pretty-bytes to 7. Together with the PNG change below, `yarn audit` goes from 185 issues to 6. Two are moderate: `file-type` through `imagemin` 9.0.1, the latest release, and `fast-xml-parser` through `imagemin-svgo`, in XML output that the SVG check does not use. Four are one high `braces` issue (deeply nested glob patterns can exhaust the stack) through gulp and `del`, with no fixed `braces` release yet. All of them only ever see the theme's own files.
+- Update sass-loader and lint-staged to 17 and chalk to 6. Raise the minimum Node.js version to 22.22.1, required by lint-staged 17.
+- Add `postcss` as a direct dependency. autoprefixer, postcss-loader, postcss-scss and postcss-flexbugs-fixes need it.
+- Remove config that has no effect with the updated packages: sass-loader `includePaths` and the `legacy-js-api` silence, 7 ESLint rules turned off that no preset turns on, and the stylelint exceptions for `print-color-adjust` and `dvh`.
+
+**Images**
+- Compress PNGs with sharp instead of `imagemin-pngquant`. sharp uses libimagequant, the same colour quantiser as pngquant, with the same speed and dithering defaults. `pngquant-bin` downloaded its binary from GitHub during every `yarn install`, and that download chain had all 4 critical and all 4 high `yarn audit` issues left after the refresh.
+- PNG files change in bytes, not visibly.
+- A truncated PNG now fails the build with the file name. pngquant wrote the readable part and left the rest of the image empty.
+
 #### [5.0.3](https://gitlab.creativestyle.pl/m2c/magesuite-frontend-builder/-/compare/5.0.2...5.0.3)
 
 > 7 October 2026

@@ -89,15 +89,7 @@ const settings = {
                                 loader: 'sass-loader',
                                 options: {
                                     sassOptions: {
-                                        includePaths: [
-                                            paths.src,
-                                            'node_modules',
-                                            ...Object.values(parentAliases),
-                                        ],
                                         silenceDeprecations: [
-                                            // sass-loader still uses the old Dart Sass callback-based
-                                            // JS API. Remove once sass-loader ships modern async API support.
-                                            'legacy-js-api',
                                             // Allow @import and global built-in functions (darken, lighten,
                                             // rgba($var, x) etc.) in themes that have not yet been migrated
                                             // to the @use/@forward module system.

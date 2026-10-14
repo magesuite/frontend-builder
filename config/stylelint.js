@@ -22,13 +22,7 @@ export default {
         'property-no-unknown': [
             true,
             {
-                ignoreProperties: ['size-adjust', 'print-color-adjust'],
-            },
-        ],
-        'unit-no-unknown': [
-            true,
-            {
-                ignoreUnits: ['dvh'],
+                ignoreProperties: ['size-adjust'],
             },
         ],
     },
